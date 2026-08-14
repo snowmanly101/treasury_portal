@@ -1,178 +1,184 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Premium Treasury Card Services - Classified Federal Treasury</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Card Services - Classified Federal Treasury</title>
     <style>
         body {
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(rgba(10, 25, 47, 0.8), rgba(10, 25, 47, 0.9)), url('{% static "images/bg.jpg" %}') no-repeat center center fixed;
-            background-size: cover;
-            min-height: 100vh;
+            background: #0b1329;
             color: #ffffff;
         }
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 50px 20px;
+        header {
+            background: #0f172a;
+            border-bottom: 1px solid #334155;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .back-nav {
-            margin-bottom: 30px;
-        }
-        .back-nav a {
-            color: #e2b714;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-        }
-        .back-nav a:hover {
-            text-decoration: underline;
-        }
-        .header-section {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-        .header-section h1 {
-            color: #e2b714;
-            font-size: 32px;
-            margin-bottom: 15px;
-            letter-spacing: 1px;
-        }
-        .header-section p {
-            color: #94a3b8;
-            font-size: 16px;
-            max-width: 700px;
-            margin: 0 auto;
-            line-height: 1.5;
-        }
-        .section-title {
+        header h1 {
             color: #e2b714;
             font-size: 20px;
-            border-bottom: 2px solid #e2b714;
-            padding-bottom: 8px;
-            margin-bottom: 30px;
-            letter-spacing: 0.5px;
+            margin: 0;
         }
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        header a {
+            color: #38bdf8;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .hero {
+            text-align: center;
+            padding: 60px 20px 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .hero h2 {
+            font-size: 36px;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+        .hero p {
+            color: #94a3b8;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .cards-container {
+            display: flex;
+            justify-content: center;
             gap: 30px;
+            padding: 40px 20px;
+            flex-wrap: wrap;
+            max-width: 1100px;
+            margin: 0 auto;
         }
         .card-box {
-            background: rgba(15, 23, 42, 0.85);
+            background: #0f172a;
             border: 1px solid #334155;
             border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            transition: transform 0.2s, border-color 0.2s;
+            width: 320px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: transform 0.3s;
         }
         .card-box:hover {
-            border-color: #e2b714;
             transform: translateY(-5px);
+            border-color: #e2b714;
         }
-        .card-preview {
+        .card-visual {
             width: 100%;
             height: 180px;
-            border-radius: 10px;
-            padding: 20px;
-            box-sizing: border-box;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-radius: 8px;
+            border: 1px solid #475569;
+            margin-bottom: 20px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            padding: 15px;
+            box-sizing: border-box;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
         }
-        .obsidian-card {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            border: 1px solid #475569;
-            color: #ffffff;
+        .card-visual.gold {
+            background: linear-gradient(135deg, #ca8a04 0%, #713f12 100%);
+            border-color: #facc15;
         }
-        .titanium-card {
-            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
-            color: #0f172a;
-            border: 1px solid #94a3b8;
+        .card-visual.black {
+            background: linear-gradient(135deg, #18181b 0%, #09090b 100%);
+            border-color: #3f3f46;
         }
         .card-chip {
-            width: 40px;
-            height: 30px;
-            background: linear-gradient(135deg, #e2b714 0%, #a1810b 100%);
+            width: 35px;
+            height: 25px;
+            background: #e2b714;
             border-radius: 4px;
         }
         .card-number {
             font-family: monospace;
-            font-size: 18px;
+            font-size: 16px;
             letter-spacing: 2px;
-        }
-        .card-footer-info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 11px;
-            text-transform: uppercase;
-            opacity: 0.8;
+            color: #e2e8f0;
         }
         .card-title {
             font-size: 18px;
             font-weight: bold;
-            color: #ffffff;
+            color: #fff;
             margin-bottom: 10px;
-        }
-        .titanium-card-title {
-            color: #0f172a;
         }
         .card-desc {
             font-size: 13px;
             color: #94a3b8;
-            line-height: 1.4;
+            margin-bottom: 20px;
+            min-height: 40px;
+        }
+        .apply-btn {
+            background: #e2b714;
+            color: #0f172a;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+        .apply-btn:hover {
+            opacity: 0.9;
         }
     </style>
 </head>
 <body>
+    <header>
+        <h1>Classified Federal Treasury</h1>
+        <a href="{% url 'login' %}">&larr; Back to Secure Login</a>
+    </header>
 
-    <div class="container">
-        <div class="back-nav">
-            <a href="{% url 'login' %}">&larr; Back to Secure Client Portal</a>
-        </div>
-
-        <div class="header-section">
-            <h1>PREMIUM TREASURY CARD SERVICES</h1>
-            <p>Access global liquidity with elite, high-limit private banking payment solutions tailored for ultra-high-net-worth account holders and sovereign entities.</p>
-        </div>
-
-        <div class="section-title">AVAILABLE PREMIUM DEBIT CARDS</div>
-
-        <div class="cards-grid">
-            <!-- Obsidian Card -->
-            <div class="card-box">
-                <div class="card-preview obsidian-card">
-                    <div class="card-chip"></div>
-                    <div class="card-number">•••• •••• •••• 7341</div>
-                    <div class="card-footer-info">
-                        <span>Cardholder</span>
-                        <span>Expires: 12/29</span>
-                    </div>
-                </div>
-                <div class="card-title">Obsidian Private Infinite</div>
-                <div class="card-desc">Designed for unlimited global transactions with concierge asset backing and zero foreign exchange fees across all European jurisdictions.</div>
-            </div>
-
-            <!-- Titanium Card -->
-            <div class="card-box" style="background: rgba(30, 41, 59, 0.85);">
-                <div class="card-preview titanium-card">
-                    <div class="card-chip"></div>
-                    <div class="card-number" style="color: #0f172a;">•••• •••• •••• 9022</div>
-                    <div class="card-footer-info" style="color: #334155;">
-                        <span>Cardholder</span>
-                        <span>Expires: 08/30</span>
-                    </div>
-                </div>
-                <div class="card-title titanium-card-title" style="color: #ffffff;">Titanium Sovereign Reserve</div>
-                <div class="card-desc">An elite tier metal card providing maximum security limits, priority settlement, and dedicated relationship manager linkage.</div>
-            </div>
-        </div>
+    <div class="hero">
+        <h2>Exclusive Card Services</h2>
+        <p>Select your tier of high-security treasury cards designed for global clearance, anonymity, and institutional utility.</p>
     </div>
 
+    <div class="cards-container">
+        <!-- Standard Card -->
+        <div class="card-box">
+            <div class="card-visual">
+                <div class="card-chip"></div>
+                <div class="card-number">•••• •••• •••• 4092</div>
+            </div>
+            <div class="card-title">Federal Standard Debit</div>
+            <div class="card-desc">Standard secure transactional card for everyday clearing protocols.</div>
+            <a href="{% url 'contact' %}"><button class="apply-btn">Apply For Your Card Today</button></a>
+        </div>
+
+        <!-- Gold Tier Card -->
+        <div class="card-box" style="border-color: #ca8a04;">
+            <div class="card-visual gold">
+                <div class="card-chip" style="background: #fff;"></div>
+                <div class="card-number" style="color: #fef08a;">•••• •••• •••• 8810</div>
+            </div>
+            <div class="card-title" style="color: #facc15;">Treasury Gold Infinite</div>
+            <div class="card-desc">High-limit elite tier card with priority clearance protection.</div>
+            <a href="{% url 'contact' %}"><button class="apply-btn" style="background: #facc15;">Apply For Your Card Today</button></a>
+        </div>
+
+        <!-- Black Tier Card -->
+        <div class="card-box">
+            <div class="card-visual black">
+                <div class="card-chip" style="background: #e2b714;"></div>
+                <div class="card-number">•••• •••• •••• 0001</div>
+            </div>
+            <div class="card-title">Classified Obsidian Black</div>
+            <div class="card-desc">Ultra-exclusive confidential card with absolute privacy shielding.</div>
+            <a href="{% url 'contact' %}"><button class="apply-btn">Apply For Your Card Today</button></a>
+        </div>
+    </div>
 </body>
 </html>

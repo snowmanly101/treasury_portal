@@ -3,34 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Classified Federal Treasury</title>
+    <title>Sign In - Classified Federal Treasury</title>
     <style>
         body {
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0b1329;
+            background: #070e1b;
             color: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
         }
-        .login-card {
-            background: #0f172a;
-            border: 1px solid #334155;
-            padding: 40px;
-            border-radius: 8px;
-            width: 400px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        .container {
+            width: 100%;
+            max-width: 440px;
+            padding: 20px;
             box-sizing: border-box;
         }
-        h2 {
-            color: #e2b714;
-            margin-top: 0;
-            font-size: 24px;
+        .login-card {
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            border-top: 4px solid #e2b714;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        .logo-area {
             text-align: center;
+            margin-bottom: 25px;
+        }
+        .logo-area img {
+            width: 65px;
+            height: 65px;
             margin-bottom: 10px;
+        }
+        .logo-area h1 {
+            font-size: 18px;
+            color: #e2b714;
+            margin: 0;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        h2 {
+            color: #fff;
+            margin-top: 0;
+            font-size: 20px;
+            text-align: center;
+            margin-bottom: 5px;
         }
         .subtitle {
             color: #94a3b8;
@@ -83,10 +104,11 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 15px;
-            margin-top: 10px;
+            margin-top: 5px;
+            transition: background 0.2s;
         }
         .btn-submit:hover {
-            opacity: 0.9;
+            background: #facc15;
         }
         .login-footer {
             display: flex;
@@ -102,17 +124,31 @@
         .login-footer a:hover {
             text-decoration: underline;
         }
-        .back-link {
+        .signup-prompt {
             text-align: center;
             margin-top: 25px;
             font-size: 13px;
+            color: #94a3b8;
+        }
+        .signup-prompt a {
+            color: #e2b714;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .signup-prompt a:hover {
+            text-decoration: underline;
+        }
+        .back-link {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 13px;
         }
         .back-link a {
-            color: #94a3b8;
+            color: #64748b;
             text-decoration: none;
         }
         .back-link a:hover {
-            color: #fff;
+            color: #cbd5e1;
         }
         .error {
             background: rgba(239, 68, 68, 0.1);
@@ -127,37 +163,49 @@
     </style>
 </head>
 <body>
-    <div class="login-card">
-        <h2>Treasury Portal</h2>
-        <div class="subtitle">Secure Sign-In</div>
-        
-        {% if error %}
-            <div class="error">{{ error }}</div>
-        {% endif %}
-
-        <form method="POST">
-            {% csrf_token %}
+    <div class="container">
+        <div class="login-card">
+            <div class="logo-area">
+                <!-- Federal Treasury Emblem Representation -->
+                <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#e2b714" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                <h1>Federal Treasury</h1>
+            </div>
             
-            <div class="input-group">
-                <label for="username">Username or Email</label>
-                <input type="text" id="username" name="username" required placeholder="Enter username">
+            <h2>Secure Sign-In</h2>
+            <div class="subtitle">Access your classified account dashboard</div>
+            
+            {% if error %}
+                <div class="error">{{ error }}</div>
+            {% endif %}
+
+            <form method="POST">
+                {% csrf_token %}
+                
+                <div class="input-group">
+                    <label for="username">Username or Email</label>
+                    <input type="text" id="username" name="username" required placeholder="Enter username">
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required placeholder="Enter password">
+                    <button type="button" class="toggle-password" onclick="togglePasswordVisibility()">Show</button>
+                </div>
+
+                <button type="submit" class="btn-submit">SIGN IN</button>
+
+                <div class="login-footer">
+                    <a href="#">Forgot Password?</a>
+                </div>
+            </form>
+
+            <div class="signup-prompt">
+                Don't have an account? <a href="{% url 'signup' %}">Sign Up</a>
             </div>
 
-            <div class="input-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required placeholder="Enter password">
-                <button type="button" class="toggle-password" onclick="togglePasswordVisibility()">Show</button>
+            <div class="back-link">
+                <a href="{% url 'debit_cards' %}">&larr; View Premium Card Services</a>
             </div>
-
-            <button type="submit" class="btn-submit">SIGN IN</button>
-
-            <div class="login-footer">
-                <a href="#">Forgot Password?</a>
-            </div>
-        </form>
-
-        <div class="back-link">
-            <a href="{% url 'debit_cards' %}">&larr; View Premium Card Services</a>
         </div>
     </div>
 
