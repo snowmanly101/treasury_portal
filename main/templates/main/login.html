@@ -1,95 +1,88 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Secure Client Login - Classified Federal Treasury</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Classified Federal Treasury</title>
     <style>
         body {
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(rgba(10, 25, 47, 0.7), rgba(10, 25, 47, 0.85)), url('{% static "images/bg.jpg" %}') no-repeat center center fixed;
-            background-size: cover;
-            height: 100vh;
+            background: #0b1329;
+            color: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
+            min-height: 100vh;
         }
         .login-card {
-            background: rgba(15, 23, 42, 0.95);
-            border: 1px solid #e2b714;
-            border-radius: 12px;
-            width: 400px;
+            background: #0f172a;
+            border: 1px solid #334155;
             padding: 40px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-            color: #ffffff;
+            border-radius: 8px;
+            width: 400px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
             box-sizing: border-box;
         }
-        .login-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .login-header h2 {
+        h2 {
             color: #e2b714;
-            margin: 0 0 8px 0;
+            margin-top: 0;
             font-size: 24px;
-            letter-spacing: 1px;
+            text-align: center;
+            margin-bottom: 10px;
         }
-        .login-header p {
+        .subtitle {
             color: #94a3b8;
             font-size: 13px;
-            margin: 0;
+            text-align: center;
+            margin-bottom: 25px;
         }
-        .form-group {
-            margin-bottom: 20px;
-            position: relative;
-        }
-        .form-group label {
+        label {
             display: block;
             margin-bottom: 8px;
             font-size: 13px;
             color: #cbd5e1;
         }
-        .input-container {
+        .input-group {
             position: relative;
-            display: flex;
-            align-items: center;
+            margin-bottom: 20px;
         }
-        .form-group input {
+        input {
             width: 100%;
-            padding: 12px 40px 12px 15px;
+            padding: 12px;
             background: #1e293b;
             border: 1px solid #475569;
-            border-radius: 6px;
-            color: #ffffff;
-            font-size: 15px;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 14px;
             box-sizing: border-box;
         }
-        .form-group input:focus {
-            border-color: #e2b714;
+        input:focus {
             outline: none;
+            border-color: #e2b714;
         }
         .toggle-password {
             position: absolute;
-            right: 15px;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
             background: none;
             border: none;
             color: #94a3b8;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 12px;
         }
         .btn-submit {
             width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, #e2b714 0%, #c29b0c 100%);
-            border: none;
-            border-radius: 6px;
+            background: #e2b714;
             color: #0f172a;
+            border: none;
+            padding: 12px;
             font-weight: bold;
-            font-size: 16px;
+            border-radius: 4px;
             cursor: pointer;
-            transition: opacity 0.2s;
+            font-size: 15px;
             margin-top: 10px;
         }
         .btn-submit:hover {
@@ -99,11 +92,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 20px;
+            margin-top: 15px;
             font-size: 13px;
         }
         .login-footer a {
-            color: #e2b714;
+            color: #38bdf8;
             text-decoration: none;
         }
         .login-footer a:hover {
@@ -112,21 +105,21 @@
         .back-link {
             text-align: center;
             margin-top: 25px;
+            font-size: 13px;
         }
         .back-link a {
             color: #94a3b8;
-            font-size: 13px;
             text-decoration: none;
         }
         .back-link a:hover {
-            color: #ffffff;
+            color: #fff;
         }
-        .error-msg {
-            background: rgba(239, 68, 68, 0.2);
+        .error {
+            background: rgba(239, 68, 68, 0.1);
             border: 1px solid #ef4444;
             color: #fca5a5;
             padding: 10px;
-            border-radius: 6px;
+            border-radius: 4px;
             font-size: 13px;
             margin-bottom: 20px;
             text-align: center;
@@ -134,43 +127,37 @@
     </style>
 </head>
 <body>
-
     <div class="login-card">
-        <div class="login-header">
-            <h2>SECURE CLIENT LOGIN</h2>
-            <p>Classified Federal Treasury • Estonia</p>
-        </div>
-
-        {% if messages %}
-            {% for message in messages %}
-                <div class="error-msg">{{ message }}</div>
-            {% endfor %}
+        <h2>Treasury Portal</h2>
+        <div class="subtitle">Secure Sign-In</div>
+        
+        {% if error %}
+            <div class="error">{{ error }}</div>
         {% endif %}
 
         <form method="POST">
             {% csrf_token %}
-            <div class="form-group">
-                <label for="username">Account ID or Username</label>
-                <input type="text" id="username" name="username" required autocomplete="username">
+            
+            <div class="input-group">
+                <label for="username">Username or Email</label>
+                <input type="text" id="username" name="username" required placeholder="Enter username">
             </div>
 
-            <div class="form-group">
-                <label for="password">Password / Security PIN</label>
-                <div class="input-container">
-                    <input type="password" id="password" name="password" required autocomplete="current-password">
-                    <button type="button" class="toggle-password" onclick="togglePasswordVisibility()">Show</button>
-                </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Enter password">
+                <button type="button" class="toggle-password" onclick="togglePasswordVisibility()">Show</button>
             </div>
 
             <button type="submit" class="btn-submit">SIGN IN</button>
 
             <div class="login-footer">
-                <a href="#forgot">Forgot Password?</a>
+                <a href="#">Forgot Password?</a>
             </div>
         </form>
 
         <div class="back-link">
-            <a href="{% url 'debit-cards' %}">&larr; View Premium Card Services</a>
+            <a href="{% url 'debit_cards' %}">&larr; View Premium Card Services</a>
         </div>
     </div>
 
