@@ -1,248 +1,178 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Premium Debit Cards - Classified Federal Treasury</title>
+    <title>Premium Treasury Card Services - Classified Federal Treasury</title>
     <style>
-        :root {
-            --bg-dark: #0a0a0a;
-            --bg-card: #141414;
-            --text-main: #ffffff;
-            --accent-gold: #c4a747;
-            --accent-gold-light: #f1c40f;
-            --accent-platinum: #e5e4e2;
-            --card-width: 350px;
-            --card-height: 220px;
-        }
-
         body {
-            background-color: var(--bg-dark);
-            background-image: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('http://googleusercontent.com/image_collection/image_retrieval/4585672922103636957');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            color: var(--text-main);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 60px 20px;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(rgba(10, 25, 47, 0.8), rgba(10, 25, 47, 0.9)), url('{% static "images/bg.jpg" %}') no-repeat center center fixed;
+            background-size: cover;
             min-height: 100vh;
+            color: #ffffff;
         }
-
         .container {
-            max-width: 1100px;
+            max-width: 1000px;
             margin: 0 auto;
+            padding: 50px 20px;
         }
-
-        h1, h2 { color: var(--accent-gold-light); text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
-        h1 { font-size: 2.5rem; margin-bottom: 10px; }
-        h2 { font-size: 1.8rem; margin-top: 50px; border-bottom: 2px solid var(--accent-gold); padding-bottom: 15px; display: inline-block; }
-
-        .back-link { color: #aaa; text-decoration: none; display: inline-block; margin-bottom: 30px; transition: color 0.3s; }
-        .back-link:hover { color: var(--accent-gold-light); }
-
-        /* --- CARD DISPLAY SECTION --- */
-        .card-showcase {
-            display: flex;
-            justify-content: center;
-            gap: 50px;
-            flex-wrap: wrap;
-            margin-top: 40px;
+        .back-nav {
+            margin-bottom: 30px;
         }
-
-        .virtual-card {
-            width: var(--card-width);
-            height: var(--card-height);
-            border-radius: 15px;
-            position: relative;
-            color: #fff;
+        .back-nav a {
+            color: #e2b714;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .back-nav a:hover {
+            text-decoration: underline;
+        }
+        .header-section {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .header-section h1 {
+            color: #e2b714;
+            font-size: 32px;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+        .header-section p {
+            color: #94a3b8;
+            font-size: 16px;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+        .section-title {
+            color: #e2b714;
+            font-size: 20px;
+            border-bottom: 2px solid #e2b714;
+            padding-bottom: 8px;
+            margin-bottom: 30px;
+            letter-spacing: 0.5px;
+        }
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+        .card-box {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid #334155;
+            border-radius: 12px;
             padding: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .card-box:hover {
+            border-color: #e2b714;
+            transform: translateY(-5px);
+        }
+        .card-preview {
+            width: 100%;
+            height: 180px;
+            border-radius: 10px;
+            padding: 20px;
             box-sizing: border-box;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-            overflow: hidden;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
-
-        .virtual-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+        .obsidian-card {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid #475569;
+            color: #ffffff;
         }
-
-        /* Glossy overlay effect */
-        .virtual-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -50%;
-            width: 200%;
-            height: 100%;
-            background: linear-gradient(to bottom right, rgba(255,255,255,0.15), transparent, rgba(255,255,255,0));
-            transform: rotate(15deg);
-            pointer-events: none;
+        .titanium-card {
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+            color: #0f172a;
+            border: 1px solid #94a3b8;
         }
-
-        /* Card 1: Obsidian Metal */
-        .card-obsidian {
-            background: linear-gradient(135deg, #0f0f0f 0%, #2c2c2c 100%);
-            border: 1px solid #444;
-        }
-        .card-obsidian h3 { color: var(--accent-platinum); }
-        .card-obsidian .chip-shine { background: linear-gradient(to right, #c0c0c0, #e0e0e0); }
-
-        /* Card 2: Titanium Reserve */
-        .card-titanium {
-            background: linear-gradient(135deg, #a0a0a0 0%, #dcdcdc 50%, #a0a0a0 100%);
-            border: 1px solid #fff;
-            color: #222;
-        }
-        .card-titanium h3 { color: #000; }
-        .card-titanium .chip-shine { background: linear-gradient(to right, #b8860b, #ffd700); }
-        .card-titanium .card-number, .card-titanium .card-label { color: #333; }
-
-        /* Card Details Styling */
         .card-chip {
-            width: 50px;
-            height: 40px;
-            border-radius: 6px;
-            background: linear-gradient(to right, #b8860b, #ffd700);
-            position: relative;
+            width: 40px;
+            height: 30px;
+            background: linear-gradient(135deg, #e2b714 0%, #a1810b 100%);
+            border-radius: 4px;
         }
-        .chip-shine {
-            position: absolute;
-            width: 60%;
-            height: 60%;
-            background: rgba(255,255,255,0.4);
-            top: 20%;
-            left: 20%;
-            border-radius: 3px;
-        }
-
-        .card-logo {
-            font-size: 1.2rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-align: right;
-        }
-
         .card-number {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 1.4rem;
-            letter-spacing: 3px;
-            margin: 10px 0;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+            font-family: monospace;
+            font-size: 18px;
+            letter-spacing: 2px;
         }
-
-        .card-details-row {
+        .card-footer-info {
             display: flex;
             justify-content: space-between;
-            font-size: 0.9rem;
+            font-size: 11px;
             text-transform: uppercase;
+            opacity: 0.8;
         }
-
-        .card-label { font-size: 0.7rem; opacity: 0.7; margin-bottom: 2px; }
-        .card-value { letter-spacing: 1px; }
-
-        /* --- APPLICATION STEPS SECTION --- */
-        .info-box { background: rgba(30, 30, 30, 0.9); padding: 40px; border-radius: 8px; border-left: 5px solid var(--accent-gold); margin-top: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.4); }
-        ol.application-steps { list-style: none; counter-reset: step; padding-left: 0; }
-        ol.application-steps li { counter-increment: step; margin-bottom: 20px; padding-left: 60px; position: relative; line-height: 1.6; }
-        ol.application-steps li::before { content: counter(step); position: absolute; left: 0; top: -5px; width: 40px; height: 40px; background: var(--accent-gold); color: var(--bg-dark); border-radius: 50%; text-align: center; line-height: 40px; font-weight: bold; font-size: 1.2rem; }
-        
-        .btn-container { text-align: center; margin-top: 40px; }
-        .btn {
-            display: inline-block;
-            padding: 15px 35px;
-            background: linear-gradient(to right, var(--accent-gold), var(--accent-gold-light));
-            color: var(--bg-dark);
-            text-decoration: none;
+        .card-title {
+            font-size: 18px;
             font-weight: bold;
-            text-transform: uppercase;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-            border: none;
-            font-size: 1rem;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            color: #ffffff;
+            margin-bottom: 10px;
         }
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.5);
-            background: linear-gradient(to right, var(--accent-gold-light), var(--accent-gold));
+        .titanium-card-title {
+            color: #0f172a;
         }
-
-        /* Responsive Adjustments */
-        @media (max-width: 768px) {
-            body { padding: 30px 10px; }
-            h1 { font-size: 2rem; }
-            h2 { font-size: 1.5rem; }
-            .virtual-card { width: 300px; height: 190px; padding: 20px; }
-            .card-number { font-size: 1.2rem; }
+        .card-desc {
+            font-size: 13px;
+            color: #94a3b8;
+            line-height: 1.4;
         }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <a href="{% url 'login' %}" class="back-link">&larr; Back to Secure Client Portal</a>
-        
-        <div style="text-align: center;">
-            <h1>Premium Treasury Card Services</h1>
-            <p style="color: #ccc; max-width: 600px; margin: 0 auto;">Access global liquidity with elite, high-limit private banking payment solutions tailored for ultra-high-net-worth account holders and sovereign entities.</p>
+        <div class="back-nav">
+            <a href="{% url 'login' %}">&larr; Back to Secure Client Portal</a>
         </div>
 
-        <h2>Available Premium Debit Cards</h2>
+        <div class="header-section">
+            <h1>PREMIUM TREASURY CARD SERVICES</h1>
+            <p>Access global liquidity with elite, high-limit private banking payment solutions tailored for ultra-high-net-worth account holders and sovereign entities.</p>
+        </div>
 
-        <div class="card-showcase">
-            <!-- CARD 1: Obsidian Metal -->
-            <div class="virtual-card card-obsidian">
-                <div class="card-chip"><div class="chip-shine"></div></div>
-                <div class="card-logo">Obsidian</div>
-                <div class="card-number">** ** ** 7341</div>
-                <div class="card-details-row">
-                    <div>
-                        <div class="card-label">Cardholder</div>
-                        <div class="card-value">{{ owner_name }}</div>
-                    </div>
-                    <div>
-                        <div class="card-label">Expires</div>
-                        <div class="card-value">12/31</div>
+        <div class="section-title">AVAILABLE PREMIUM DEBIT CARDS</div>
+
+        <div class="cards-grid">
+            <!-- Obsidian Card -->
+            <div class="card-box">
+                <div class="card-preview obsidian-card">
+                    <div class="card-chip"></div>
+                    <div class="card-number">•••• •••• •••• 7341</div>
+                    <div class="card-footer-info">
+                        <span>Cardholder</span>
+                        <span>Expires: 12/29</span>
                     </div>
                 </div>
+                <div class="card-title">Obsidian Private Infinite</div>
+                <div class="card-desc">Designed for unlimited global transactions with concierge asset backing and zero foreign exchange fees across all European jurisdictions.</div>
             </div>
 
-            <!-- CARD 2: Titanium Reserve -->
-            <div class="virtual-card card-titanium">
-                <div class="card-chip"><div class="chip-shine"></div></div>
-                <div class="card-logo">Titanium</div>
-                <div class="card-number">** ** ** 9902</div>
-                <div class="card-details-row">
-                    <div>
-                        <div class="card-label">Cardholder</div>
-                        <div class="card-value">{{ owner_name }}</div>
-                    </div>
-                    <div>
-                        <div class="card-label">Expires</div>
-                        <div class="card-value">09/30</div>
+            <!-- Titanium Card -->
+            <div class="card-box" style="background: rgba(30, 41, 59, 0.85);">
+                <div class="card-preview titanium-card">
+                    <div class="card-chip"></div>
+                    <div class="card-number" style="color: #0f172a;">•••• •••• •••• 9022</div>
+                    <div class="card-footer-info" style="color: #334155;">
+                        <span>Cardholder</span>
+                        <span>Expires: 08/30</span>
                     </div>
                 </div>
+                <div class="card-title titanium-card-title" style="color: #ffffff;">Titanium Sovereign Reserve</div>
+                <div class="card-desc">An elite tier metal card providing maximum security limits, priority settlement, and dedicated relationship manager linkage.</div>
             </div>
-        </div>
-
-        <div class="info-box">
-            <h2>How to Apply for a Debit Card</h2>
-            <ol class="application-steps">
-                <li><strong>Ensure Account Verification:</strong> Your secure treasury account must be fully onboarded and active.</li>
-                <li><strong>Navigate to Card Services:</strong> Log into your dashboard and select the <strong>Card Services</strong> module from the main menu.</li>
-                <li><strong>Select Card Tier:</strong> Review the Terms of Service and select either the Obsidian or Titanium card option.</li>
-                <li><strong>Compliance Approval:</strong> Your application will be submitted for review by the compliance department. This process is typically completed within 1 business day for existing high-net-worth clients.</li>
-                <li><strong>Secure Dispatch:</strong> Upon approval, your physical encrypted card will be manufactured and dispatched via courier (FedEx/DHL) to your registered address. Expedited global delivery is standard.</li>
-            </ol>
-        </div>
-
-        <div class="btn-container">
-            <a href="{% url 'login' %}" class="btn">Proceed to Secure Dashboard Login</a>
         </div>
     </div>
+
 </body>
 </html>

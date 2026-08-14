@@ -6,6 +6,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home_view, name='home'),
     path('login/', views.login_view, name='login'),
+    path('security-question/', views.security_question_view, name='security_question'),
     path('signup/', views.signup_view, name='signup'),
     path('loading-auth/', views.loading_auth_view, name='loading_auth'),
     path('verify-otp/', views.verify_otp_view, name='verify_otp'),

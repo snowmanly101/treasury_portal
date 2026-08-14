@@ -1,0 +1,103 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Security Verification - Classified Federal Treasury</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(rgba(10, 25, 47, 0.7), rgba(10, 25, 47, 0.85)), url('{% static "images/bg.jpg" %}') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .login-card {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid #e2b714;
+            border-radius: 12px;
+            width: 420px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            color: #ffffff;
+            box-sizing: border-box;
+        }
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .login-header h2 {
+            color: #e2b714;
+            margin: 0 0 8px 0;
+            font-size: 22px;
+            letter-spacing: 1px;
+        }
+        .login-header p {
+            color: #94a3b8;
+            font-size: 13px;
+            margin: 0;
+            line-height: 1.4;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: #cbd5e1;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background: #1e293b;
+            border: 1px solid #475569;
+            border-radius: 6px;
+            color: #ffffff;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+        .form-group input:focus {
+            border-color: #e2b714;
+            outline: none;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #e2b714 0%, #c29b0c 100%);
+            border: none;
+            border-radius: 6px;
+            color: #0f172a;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            margin-top: 10px;
+        }
+        .btn-submit:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <div class="login-header">
+            <h2>SECURITY VERIFICATION</h2>
+            <p>Please answer your pre-registered security challenge to proceed to authentication OTP.</p>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Security Question: <strong>In what city was your primary corporate entity founded?</strong></label>
+                <input type="text" name="security_answer" placeholder="Enter your answer" required>
+            </div>
+            <button type="submit" class="btn-submit">VERIFY & PROCEED</button>
+        </form>
+    </div>
+</body>
+</html>

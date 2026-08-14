@@ -46,9 +46,9 @@ def login_view(request):
         
         if user is not None:
             request.session['failed_attempts'] = 0
-            # Instead of logging in instantly, trigger the security loading/OTP flow
-            request.session['pending_auth'] = True
-            return redirect('loading_auth')
+            # Store user ID in session so we can complete login after security question
+            request.session['pre_auth_user_id'] = user.id
+            return redirect('security_question')
         else:
             attempts += 1
             request.session['failed_attempts'] = attempts
@@ -65,6 +65,20 @@ def login_view(request):
             })
 
     return render(request, 'main/login.html')
+
+def security_question_view(request):
+    if not request.session.get('pre_auth_user_id'):
+        return redirect('login')
+        
+    error_message = None
+    if request.method == 'POST':
+        answer = request.POST.get('security_answer')
+        # You can validate the answer here if needed, then proceed to loading/auth flow
+        request.session['pending_auth'] = True
+        del request.session['pre_auth_user_id']
+        return redirect('loading_auth')
+        
+    return render(request, 'main/security_question.html', {'error': error_message})
 
 def signup_view(request):
     return render(request, 'main/signup.html')
@@ -83,8 +97,6 @@ def verify_otp_view(request):
         PERMANENT_OTP = '7788' 
         
         if entered_otp == PERMANENT_OTP:
-            # Authenticate fully and clear pending auth flag
-            # Note: We can pull the user since login passed earlier, or re-verify
             request.session['logged_in'] = True
             del request.session['pending_auth']
             return redirect('dashboard')
@@ -98,18 +110,18 @@ def dashboard_view(request):
         return redirect('login')
     
     transactions = [
-        {"date": "2025-11-12", "ref": "TXN-99412", "company": "****4902 - Barrick Gold Corp (Canada)", "amount": "+$185,400.00", "status": "Cleared"},
-        {"date": "2023-04-19", "ref": "TXN-44102", "company": "****1184 - Deutsche bullion clearing (Germany)", "amount": "+$142,500.00", "status": "Cleared"},
-        {"date": "2025-08-30", "ref": "TXN-88201", "company": "****7351 - Newmont Corporation (USA)", "amount": "+$198,200.00", "status": "Cleared"},
-        {"date": "2022-02-14", "ref": "TXN-11930", "company": "****5529 - Zurich Reserve Desk (Switzerland)", "amount": "+$175,000.00", "status": "Cleared"},
-        {"date": "2024-06-05", "ref": "TXN-66382", "company": "****9043 - Dubai Gold Bullion DMCC (UAE)", "amount": "+$160,300.00", "status": "Cleared"},
-        {"date": "2023-12-01", "ref": "TXN-55219", "company": "****2267 - Kinross Gold Mining (Canada)", "amount": "+$130,500.00", "status": "Cleared"},
-        {"date": "2022-09-18", "ref": "TXN-22485", "company": "****6810 - London Bullion Market Assoc (UK)", "amount": "+$115,000.00", "status": "Cleared"},
-        {"date": "2024-10-22", "ref": "TXN-77391", "company": "****3156 - Singapore Mint & Depository (SG)", "amount": "+$155,000.00", "status": "Cleared"},
-        {"date": "2023-07-08", "ref": "TXN-33820", "company": "****8492 - Evolution Mining Ltd (Australia)", "amount": "+$145,000.00", "status": "Cleared"},
-        {"date": "2025-01-15", "ref": "TXN-88104", "company": "****5037 - Agnico Eagle Mines (Finland Desk)", "amount": "+$125,000.00", "status": "Cleared"},
-        {"date": "2022-05-27", "ref": "TXN-10492", "company": "****1924 - Yamana Reserve Desk (Brazil)", "amount": "+$165,000.00", "status": "Cleared"},
-        {"date": "2024-03-11", "ref": "TXN-61205", "company": "****7483 - Frankfurt Treasury Vault (Germany)", "amount": "+$198,000.00", "status": "Cleared"},
+        {"date": "2025-11-12", "ref": "TXN-99412", "company": "**4902 - Barrick Gold Corp (Canada)", "amount": "+$185,400.00", "status": "Cleared"},
+        {"date": "2023-04-19", "ref": "TXN-44102", "company": "**1184 - Deutsche bullion clearing (Germany)", "amount": "+$142,500.00", "status": "Cleared"},
+        {"date": "2025-08-30", "ref": "TXN-88201", "company": "**7351 - Newmont Corporation (USA)", "amount": "+$198,200.00", "status": "Cleared"},
+        {"date": "2022-02-14", "ref": "TXN-11930", "company": "**5529 - Zurich Reserve Desk (Switzerland)", "amount": "+$175,000.00", "status": "Cleared"},
+        {"date": "2024-06-05", "ref": "TXN-66382", "company": "**9043 - Dubai Gold Bullion DMCC (UAE)", "amount": "+$160,300.00", "status": "Cleared"},
+        {"date": "2023-12-01", "ref": "TXN-55219", "company": "**2267 - Kinross Gold Mining (Canada)", "amount": "+$130,500.00", "status": "Cleared"},
+        {"date": "2022-09-18", "ref": "TXN-22485", "company": "**6810 - London Bullion Market Assoc (UK)", "amount": "+$115,000.00", "status": "Cleared"},
+        {"date": "2024-10-22", "ref": "TXN-77391", "company": "**3156 - Singapore Mint & Depository (SG)", "amount": "+$155,000.00", "status": "Cleared"},
+        {"date": "2023-07-08", "ref": "TXN-33820", "company": "**8492 - Evolution Mining Ltd (Australia)", "amount": "+$145,000.00", "status": "Cleared"},
+        {"date": "2025-01-15", "ref": "TXN-88104", "company": "**5037 - Agnico Eagle Mines (Finland Desk)", "amount": "+$125,000.00", "status": "Cleared"},
+        {"date": "2022-05-27", "ref": "TXN-10492", "company": "**1924 - Yamana Reserve Desk (Brazil)", "amount": "+$165,000.00", "status": "Cleared"},
+        {"date": "2024-03-11", "ref": "TXN-61205", "company": "**7483 - Frankfurt Treasury Vault (Germany)", "amount": "+$198,000.00", "status": "Cleared"},
     ]
     
     context = {

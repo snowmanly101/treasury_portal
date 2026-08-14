@@ -1,146 +1,191 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Classified Federal Treasury - Secure Client Login</title>
+    <title>Secure Client Login - Classified Federal Treasury</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.85)), url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(rgba(10, 25, 47, 0.7), rgba(10, 25, 47, 0.85)), url('{% static "images/bg.jpg" %}') no-repeat center center fixed;
             background-size: cover;
-            color: #1e293b;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
         }
-
         .login-card {
-            background-color: rgba(15, 23, 42, 0.92);
-            border: 1px solid #d4af37;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 420px;
-            padding: 40px 30px;
-            box-sizing: border-box;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid #e2b714;
+            border-radius: 12px;
+            width: 400px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
             color: #ffffff;
+            box-sizing: border-box;
+        }
+        .login-header {
             text-align: center;
-        }
-
-        h2 {
-            color: #d4af37;
-            margin-bottom: 5px;
-            font-size: 24px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .subtitle {
-            font-size: 13px;
-            color: #94a3b8;
             margin-bottom: 30px;
         }
-
+        .login-header h2 {
+            color: #e2b714;
+            margin: 0 0 8px 0;
+            font-size: 24px;
+            letter-spacing: 1px;
+        }
+        .login-header p {
+            color: #94a3b8;
+            font-size: 13px;
+            margin: 0;
+        }
         .form-group {
             margin-bottom: 20px;
-            text-align: left;
+            position: relative;
         }
-
-        label {
+        .form-group label {
             display: block;
-            font-size: 12px;
-            color: #cbd5e1;
             margin-bottom: 8px;
+            font-size: 13px;
+            color: #cbd5e1;
         }
-
-        input {
+        .input-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .form-group input {
             width: 100%;
-            padding: 12px 15px;
-            background-color: #0f172a;
-            border: 1px solid #334155;
-            border-radius: 4px;
+            padding: 12px 40px 12px 15px;
+            background: #1e293b;
+            border: 1px solid #475569;
+            border-radius: 6px;
             color: #ffffff;
-            font-size: 14px;
+            font-size: 15px;
             box-sizing: border-box;
         }
-
-        input:focus {
+        .form-group input:focus {
+            border-color: #e2b714;
             outline: none;
-            border-color: #d4af37;
         }
-
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 13px;
+        }
         .btn-submit {
             width: 100%;
             padding: 12px;
-            background: linear-gradient(135deg, #f59e0b 0%, #d4af37 100%);
+            background: linear-gradient(135deg, #e2b714 0%, #c29b0c 100%);
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             color: #0f172a;
             font-weight: bold;
-            font-size: 15px;
+            font-size: 16px;
             cursor: pointer;
-            text-transform: uppercase;
-            margin-top: 10px;
             transition: opacity 0.2s;
+            margin-top: 10px;
         }
-
         .btn-submit:hover {
             opacity: 0.9;
         }
-
-        .footer-link {
-            display: block;
+        .login-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            font-size: 13px;
+        }
+        .login-footer a {
+            color: #e2b714;
+            text-decoration: none;
+        }
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+        .back-link {
+            text-align: center;
             margin-top: 25px;
-            color: #d4af37;
+        }
+        .back-link a {
+            color: #94a3b8;
             font-size: 13px;
             text-decoration: none;
         }
-
-        .footer-link:hover {
-            text-decoration: underline;
+        .back-link a:hover {
+            color: #ffffff;
         }
-
-        @media (max-width: 480px) {
-            .login-card {
-                padding: 25px 20px;
-                width: 95%;
-            }
+        .error-msg {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid #ef4444;
+            color: #fca5a5;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 
     <div class="login-card">
-        <h2>Secure Client Login</h2>
-        <div class="subtitle">Classified Federal Treasury &bull; Estonia</div>
+        <div class="login-header">
+            <h2>SECURE CLIENT LOGIN</h2>
+            <p>Classified Federal Treasury • Estonia</p>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="error-msg">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
 
         <form method="POST">
             {% csrf_token %}
-            
-            {% if form.errors %}
-                <div style="background-color: rgba(220, 38, 38, 0.2); border: 1px solid #dc2626; color: #fca5a5; padding: 10px; border-radius: 4px; font-size: 13px; margin-bottom: 20px;">
-                    Invalid credentials. Please check your details and try again.
+            <div class="form-group">
+                <label for="username">Account ID or Username</label>
+                <input type="text" id="username" name="username" required autocomplete="username">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password / Security PIN</label>
+                <div class="input-container">
+                    <input type="password" id="password" name="password" required autocomplete="current-password">
+                    <button type="button" class="toggle-password" onclick="togglePasswordVisibility()">Show</button>
                 </div>
-            {% endif %}
-
-            <div class="form-group">
-                <label for="id_username">Account ID or Username</label>
-                <input type="text" name="username" id="id_username" placeholder="Enter your identifier" required>
             </div>
 
-            <div class="form-group">
-                <label for="id_password">Password / Security PIN</label>
-                <input type="password" name="password" id="id_password" placeholder="••••••••••••" required>
-            </div>
+            <button type="submit" class="btn-submit">SIGN IN</button>
 
-            <button type="submit" class="btn-submit">Sign In</button>
+            <div class="login-footer">
+                <a href="#forgot">Forgot Password?</a>
+            </div>
         </form>
 
-        <a href="#" class="footer-link">&larr; View Premium Card Services</a>
+        <div class="back-link">
+            <a href="{% url 'debit-cards' %}">&larr; View Premium Card Services</a>
+        </div>
     </div>
 
+    <script>
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const toggleBtn = document.querySelector('.toggle-password');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleBtn.textContent = 'Hide';
+            } else {
+                passwordInput.type = 'password';
+                toggleBtn.textContent = 'Show';
+            }
+        }
+    </script>
 </body>
 </html>
