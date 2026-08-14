@@ -2,210 +2,145 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Secure Client Login - Classified Federal Treasury</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classified Federal Treasury - Secure Client Login</title>
     <style>
         body {
-            /* World-class elite banking background image with dark overlay */
-            background: linear-gradient(rgba(5, 5, 8, 0.85), rgba(10, 10, 15, 0.90)), 
-                        url('https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
-            background-size: cover;
-            color: #ffffff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.85)), url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
+            color: #1e293b;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            min-height: 100vh;
         }
 
-        .login-container {
-            width: 100%;
-            max-width: 440px;
-            padding: 20px;
-        }
-
-        .login-box {
-            background: rgba(18, 18, 24, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9);
-            border: 1px solid rgba(241, 196, 15, 0.3);
-            position: relative;
+        .login-card {
+            background-color: rgba(15, 23, 42, 0.92);
+            border: 1px solid #d4af37;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 420px;
+            padding: 40px 30px;
+            box-sizing: border-box;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            color: #ffffff;
+            text-align: center;
         }
 
         h2 {
-            color: #f1c40f;
+            color: #d4af37;
             margin-bottom: 5px;
-            font-size: 1.8rem;
+            font-size: 24px;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            letter-spacing: 1px;
         }
 
         .subtitle {
-            font-size: 0.85rem;
-            color: #aaa;
+            font-size: 13px;
+            color: #94a3b8;
             margin-bottom: 30px;
-            letter-spacing: 0.5px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
         }
 
         label {
-            font-size: 0.85rem;
-            color: #ddd;
             display: block;
-            margin-bottom: 6px;
+            font-size: 12px;
+            color: #cbd5e1;
+            margin-bottom: 8px;
         }
 
         input {
             width: 100%;
             padding: 12px 15px;
-            margin-bottom: 20px;
-            background: rgba(10, 10, 15, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #fff;
-            border-radius: 6px;
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 4px;
+            color: #ffffff;
+            font-size: 14px;
             box-sizing: border-box;
-            font-size: 1rem;
-            transition: all 0.3s ease;
         }
 
         input:focus {
-            border-color: #f1c40f;
-            box-shadow: 0 0 8px rgba(241, 196, 15, 0.4);
             outline: none;
+            border-color: #d4af37;
         }
 
-        button {
+        .btn-submit {
             width: 100%;
-            padding: 13px;
-            background: linear-gradient(to right, #d4af37, #f1c40f);
+            padding: 12px;
+            background: linear-gradient(135deg, #f59e0b 0%, #d4af37 100%);
             border: none;
-            color: #050508;
+            border-radius: 4px;
+            color: #0f172a;
             font-weight: bold;
-            text-transform: uppercase;
-            border-radius: 6px;
+            font-size: 15px;
             cursor: pointer;
-            font-size: 1rem;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(241, 196, 15, 0.3);
+            text-transform: uppercase;
+            margin-top: 10px;
+            transition: opacity 0.2s;
         }
 
-        button:hover {
-            opacity: 0.95;
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(241, 196, 15, 0.5);
+        .btn-submit:hover {
+            opacity: 0.9;
         }
 
-        .notification-popup {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(192, 57, 43, 0.95);
-            color: white;
-            padding: 15px 20px;
-            border-radius: 6px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.7);
-            font-size: 0.9rem;
-            z-index: 1000;
-            border-left: 6px solid #e74c3c;
-            max-width: 350px;
-            animation: slideIn 0.4s ease-out;
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        .error-text {
-            color: #ff6b6b;
-            font-size: 0.85rem;
-            margin-bottom: 15px;
-            background: rgba(231, 76, 60, 0.15);
-            padding: 10px;
-            border-radius: 4px;
-            border-left: 3px solid #e74c3c;
-        }
-
-        .warning-text {
-            color: #f39c12;
-            font-size: 0.85rem;
-            margin-bottom: 15px;
-            background: rgba(243, 156, 18, 0.15);
-            padding: 10px;
-            border-radius: 4px;
-            border-left: 3px solid #f39c12;
-        }
-
-        .footer-links {
+        .footer-link {
+            display: block;
             margin-top: 25px;
-            text-align: center;
-        }
-
-        .footer-links a {
-            color: #f1c40f;
+            color: #d4af37;
+            font-size: 13px;
             text-decoration: none;
-            font-size: 0.85rem;
-            transition: color 0.2s;
         }
 
-        .footer-links a:hover {
-            color: #fff;
+        .footer-link:hover {
             text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 25px 20px;
+                width: 95%;
+            }
         }
     </style>
 </head>
 <body>
 
-    {% if error or warning %}
-    <div id="securityPopup" class="notification-popup">
-        <strong>SECURITY ALERT:</strong><br>
-        {% if error %}{{ error }}{% else %}{{ warning }}{% endif %}
-    </div>
-    <script>
-        setTimeout(function() {
-            var popup = document.getElementById('securityPopup');
-            if(popup) { 
-                popup.style.transition = 'opacity 0.5s ease';
-                popup.style.opacity = '0';
-                setTimeout(function() { popup.style.display = 'none'; }, 500);
-            }
-        }, 7000);
-    </script>
-    {% endif %}
+    <div class="login-card">
+        <h2>Secure Client Login</h2>
+        <div class="subtitle">Classified Federal Treasury &bull; Estonia</div>
 
-    <div class="login-container">
-        <div class="login-box">
-            <h2>Secure Client Login</h2>
-            <div class="subtitle">Classified Federal Treasury • Estonia</div>
+        <form method="POST">
+            {% csrf_token %}
             
-            <form method="POST">
-                {% csrf_token %}
-                
-                <label>Account ID or Username</label>
-                <input type="text" name="username" placeholder="Enter your identifier" required autocomplete="off">
-                
-                <label>Password / Security PIN</label>
-                <input type="password" name="password" placeholder="••••••••••••" required>
-                
-                {% if error %}
-                    <div class="error-text">{{ error }}</div>
-                {% endif %}
-                
-                {% if warning %}
-                    <div class="warning-text">{{ warning }}</div>
-                {% endif %}
+            {% if form.errors %}
+                <div style="background-color: rgba(220, 38, 38, 0.2); border: 1px solid #dc2626; color: #fca5a5; padding: 10px; border-radius: 4px; font-size: 13px; margin-bottom: 20px;">
+                    Invalid credentials. Please check your details and try again.
+                </div>
+            {% endif %}
 
-                <button type="submit">Sign In</button>
-            </form>
-
-            <div class="footer-links">
-                <a href="{% url 'debit_cards' %}">&larr; View Premium Card Services</a>
+            <div class="form-group">
+                <label for="id_username">Account ID or Username</label>
+                <input type="text" name="username" id="id_username" placeholder="Enter your identifier" required>
             </div>
-        </div>
+
+            <div class="form-group">
+                <label for="id_password">Password / Security PIN</label>
+                <input type="password" name="password" id="id_password" placeholder="••••••••••••" required>
+            </div>
+
+            <button type="submit" class="btn-submit">Sign In</button>
+        </form>
+
+        <a href="#" class="footer-link">&larr; View Premium Card Services</a>
     </div>
+
 </body>
 </html>
