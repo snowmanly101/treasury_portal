@@ -64,6 +64,8 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            flex-wrap: wrap;
+            gap: 20px;
         }
         .balance-label {
             color: #94a3b8;
@@ -81,10 +83,29 @@
             text-align: right;
             color: #94a3b8;
             font-size: 13px;
+            line-height: 1.6;
         }
         .account-meta span {
             color: #e2b714;
             font-family: monospace;
+        }
+
+        /* Locked Notice Banner */
+        .locked-banner {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            color: #fca5a5;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .locked-banner span {
+            font-size: 20px;
         }
 
         /* Unique Professional Action Grid */
@@ -119,6 +140,12 @@
             border-color: #e2b714;
             background: #131c31;
         }
+        .action-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
         .action-icon {
             width: 45px;
             height: 45px;
@@ -127,8 +154,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 15px;
             color: #e2b714;
+        }
+        .padlock-icon {
+            font-size: 16px;
         }
         .action-card h3 {
             margin: 0 0 8px 0;
@@ -211,68 +240,88 @@
     <nav>
         <div class="nav-brand">Classified Federal Treasury</div>
         <div class="nav-right">
-            <div class="status-pill">Account Status: Dormant</div>
+            <div class="status-pill">🔒 Account Locked / Dormant</div>
             <a href="{% url 'login' %}" class="logout-btn">Sign Out</a>
         </div>
     </nav>
 
     <div class="main-container">
+        <!-- Account Locked Notice Banner -->
+        <div class="locked-banner">
+            <span>🔒</span>
+            <div><strong>Security Notice:</strong> This account is currently locked due to dormant status. All operations are restricted. Please contact customer care immediately to unlock your profile.</div>
+        </div>
+
         <!-- Account Balance Banner -->
         <div class="account-overview">
             <div>
-                <div class="balance-label">Available Treasury Balance</div>
-                <div class="balance-amount">$4,850,200.00</div>
+                <div class="balance-label">Current Account Balance</div>
+                <div class="balance-amount">$7,000,000.00</div>
             </div>
             <div class="account-meta">
-                <div>Account Type: <span>Institutional Reserve</span></div>
-                <div>Routing ID: <span>FT-9940-SEC</span></div>
+                <div>Account Holder: <span>Daryl Jr tuchel</span></div>
+                <div>Account Type: <span>Current Account</span></div>
+                <div>Acc Number: <span>••••4092</span></div>
+                <div>Routing ID: <span>•••••8810</span></div>
             </div>
         </div>
 
-        <!-- Unique Professional Action Grid (Redirects to Contact / Bank Services due to Dormant Status) -->
+        <!-- Unique Professional Action Grid with Padlocks -->
         <div class="section-title">Restricted Financial Operations</div>
         <div class="action-grid">
             <a href="{% url 'contact' %}" class="action-card">
-                <div class="action-icon">
-                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+                <div class="action-top-row">
+                    <div class="action-icon">
+                        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+                    </div>
+                    <div class="padlock-icon" title="Locked">🔒</div>
                 </div>
                 <h3>Transfer Funds</h3>
                 <p>Execute domestic and international wire transfers across approved global clearings.</p>
-                <span class="action-badge">Requires Active Status</span>
+                <span class="action-badge">Locked - Contact Support</span>
             </a>
 
             <a href="{% url 'contact' %}" class="action-card">
-                <div class="action-icon">
-                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                <div class="action-top-row">
+                    <div class="action-icon">
+                        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                    </div>
+                    <div class="padlock-icon" title="Locked">🔒</div>
                 </div>
                 <h3>Bill Pay</h3>
                 <p>Settle approved institutional invoices, utility statements, and recurring obligations.</p>
-                <span class="action-badge">Requires Active Status</span>
+                <span class="action-badge">Locked - Contact Support</span>
             </a>
 
             <a href="{% url 'contact' %}" class="action-card">
-                <div class="action-icon">
-                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+                <div class="action-top-row">
+                    <div class="action-icon">
+                        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+                    </div>
+                    <div class="padlock-icon" title="Locked">🔒</div>
                 </div>
                 <h3>Deposit Cheque</h3>
                 <p>Upload digital endorsed bank drafts or promissory notes for vault processing.</p>
-                <span class="action-badge">Requires Active Status</span>
+                <span class="action-badge">Locked - Contact Support</span>
             </a>
 
             <a href="{% url 'contact' %}" class="action-card">
-                <div class="action-icon">
-                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                <div class="action-top-row">
+                    <div class="action-icon">
+                        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    </div>
+                    <div class="padlock-icon" title="Locked">🔒</div>
                 </div>
                 <h3>Account Statement</h3>
                 <p>Generate, download, or audit official cryptographic statements of account activity.</p>
-                <span class="action-badge">Requires Active Status</span>
+                <span class="action-badge">Locked - Contact Support</span>
             </a>
         </div>
 
-        <!-- Transactions History Card with Functional "View More" -->
+        <!-- Transactions History Card (2017 to 2025, $10k to $100k range) with Functional "View More" -->
         <div class="transactions-card">
             <div class="transactions-header">
-                <h3>Recent Clearance Activity</h3>
+                <h3>Transaction History (2017 - 2025)</h3>
                 <button class="view-more-btn" id="viewMoreBtn" onclick="toggleTransactions()">View More</button>
             </div>
             <table>
@@ -286,41 +335,59 @@
                 </thead>
                 <tbody id="txTableBody">
                     <tr>
-                        <td>Aug 12, 2026</td>
-                        <td>Federal Wire Clearing - Settlement #881</td>
-                        <td style="color: #4ade80;">Cleared</td>
-                        <td style="text-align: right;" class="amount-positive">+$1,250,000.00</td>
+                        <td>Dec 18, 2025</td>
+                        <td>Global Wire Outbound Settlement</td>
+                        <td style="color: #f87171;">Account Locked</td>
+                        <td style="text-align: right;" class="amount-negative">-$45,000.00</td>
                     </tr>
                     <tr>
-                        <td>Aug 05, 2026</td>
-                        <td>Reserve Custody Maintenance Fee</td>
-                        <td style="color: #f87171;">Dormant Hold</td>
-                        <td style="text-align: right;" class="amount-negative">-$450.00</td>
+                        <td>Aug 14, 2024</td>
+                        <td>Institutional Capital Credit Deposit</td>
+                        <td style="color: #4ade80;">Cleared</td>
+                        <td style="text-align: right;" class="amount-positive">+$85,000.00</td>
                     </tr>
                     <tr>
-                        <td>Jul 28, 2026</td>
-                        <td>Institutional Deposit - Direct Credit</td>
+                        <td>Nov 02, 2023</td>
+                        <td>Treasury Dividend Allocation</td>
                         <td style="color: #4ade80;">Cleared</td>
-                        <td style="text-align: right;" class="amount-positive">+$3,600,650.00</td>
+                        <td style="text-align: right;" class="amount-positive">+$62,500.00</td>
                     </tr>
                     <!-- Hidden past transactions revealed on "View More" click -->
                     <tr class="hidden-row extra-tx">
-                        <td>Jul 14, 2026</td>
-                        <td>Global Liquidity Dividend Allocation</td>
+                        <td>May 19, 2022</td>
+                        <td>Offshore Settlement Wire In</td>
                         <td style="color: #4ade80;">Cleared</td>
-                        <td style="text-align: right;" class="amount-positive">+$850,000.00</td>
+                        <td style="text-align: right;" class="amount-positive">+$95,000.00</td>
                     </tr>
                     <tr class="hidden-row extra-tx">
-                        <td>Jun 30, 2026</td>
-                        <td>Security Clearance Retainer Fee</td>
+                        <td>Oct 11, 2021</td>
+                        <td>Reserve Portfolio Rebalancing Fee</td>
                         <td style="color: #4ade80;">Cleared</td>
-                        <td style="text-align: right;" class="amount-negative">-$1,200.00</td>
+                        <td style="text-align: right;" class="amount-negative">-$30,000.00</td>
                     </tr>
                     <tr class="hidden-row extra-tx">
-                        <td>Jun 12, 2026</td>
-                        <td>Initial Treasury Vault Allocation</td>
+                        <td>Feb 25, 2020</td>
+                        <td>Direct Treasury Funding Credit</td>
                         <td style="color: #4ade80;">Cleared</td>
-                        <td style="text-align: right;" class="amount-positive">+$10,000,000.00</td>
+                        <td style="text-align: right;" class="amount-positive">+$50,000.00</td>
+                    </tr>
+                    <tr class="hidden-row extra-tx">
+                        <td>Sep 14, 2019</td>
+                        <td>Institutional Asset Transfer</td>
+                        <td style="color: #4ade80;">Cleared</td>
+                        <td style="text-align: right;" class="amount-positive">+$75,000.00</td>
+                    </tr>
+                    <tr class="hidden-row extra-tx">
+                        <td>Mar 08, 2018</td>
+                        <td>Compliance Documentation Retainer</td>
+                        <td style="color: #4ade80;">Cleared</td>
+                        <td style="text-align: right;" class="amount-negative">-$20,000.00</td>
+                    </tr>
+                    <tr class="hidden-row extra-tx">
+                        <td>Jan 15, 2017</td>
+                        <td>Initial Current Account Capitalization</td>
+                        <td style="color: #4ade80;">Cleared</td>
+                        <td style="text-align: right;" class="amount-positive">+$100,000.00</td>
                     </tr>
                 </tbody>
             </table>
