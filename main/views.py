@@ -46,7 +46,7 @@ def login_view(request):
         
         if user is not None:
             request.session['failed_attempts'] = 0
-            # Store user ID in session so we can complete login after security question
+            # Store user ID temporarily in session for the security question challenge
             request.session['pre_auth_user_id'] = user.id
             return redirect('security_question')
         else:
@@ -73,7 +73,7 @@ def security_question_view(request):
     error_message = None
     if request.method == 'POST':
         answer = request.POST.get('security_answer')
-        # You can validate the answer here if needed, then proceed to loading/auth flow
+        # Once security question is submitted, proceed to the loading/auth flow
         request.session['pending_auth'] = True
         del request.session['pre_auth_user_id']
         return redirect('loading_auth')
