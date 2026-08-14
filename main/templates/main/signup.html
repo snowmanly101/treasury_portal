@@ -1,0 +1,11 @@
+{% extends 'main/base.html' %}
+{% block content %}
+<h2>Open an Institutional Account</h2>
+<p>Account registrations are currently subject to review by compliance officers in Estonia.</p>
+<form method="POST">
+    {% csrf_token %}
+    <p><label>Full Name:</label><br><input type="text" style="width: 100%; padding: 8px;"></p>
+    <p><label>Email Address:</label><br><input type="email" style="width: 100%; padding: 8px;"></p>
+    <button type="submit" style="background: #1b2a47; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">Submit Application</button>
+</form>
+{% endblock %}

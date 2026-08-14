@@ -1,0 +1,130 @@
+{% extends 'main/base.html' %}
+{% block content %}
+{% load static %}
+<style>
+    body {
+        background: linear-gradient(rgba(5, 10, 20, 0.92), rgba(15, 23, 42, 0.95)), 
+                    url('https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed !important;
+        background-size: cover !important;
+    }
+    .dash-grid { display: grid; grid-template-columns: 140px 1fr; gap: 25px; align-items: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 25px; margin-bottom: 25px; }
+    .profile-box { width: 130px; height: 140px; border: 3px solid #d4af37; border-radius: 6px; background-image: url('{% static "main/owner.jpg" %}'); background-size: cover; background-position: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+    .account-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background: #f8fafc; padding: 20px; border-radius: 6px; border: 1px solid #e2e8f0; margin-bottom: 25px; }
+    .action-buttons { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 25px; }
+    .btn-action { background: #1b2a47; color: white; padding: 12px 20px; border-radius: 4px; text-decoration: none; font-weight: 600; font-size: 0.9rem; border: none; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: background 0.2s; display: inline-block; cursor: pointer; }
+    .btn-action:hover { background: #d4af37; color: #091e3a; }
+    .security-banner { background: #fffbeb; border: 1px solid #fde047; padding: 20px; border-radius: 6px; display: flex; gap: 15px; align-items: flex-start; margin-top: 25px; }
+    
+    /* Transaction Table Styling */
+    .tx-table { width: 100%; border-collapse: collapse; margin-top: 10px; background: #ffffff; border-radius: 6px; overflow: hidden; border: 1px solid #cbd5e1; }
+    .tx-table th, .tx-table td { padding: 12px 15px; text-align: left; font-size: 0.9rem; border-bottom: 1px solid #e2e8f0; }
+    .tx-table th { background: #1b2a47; color: #ffffff; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; }
+    .tx-hidden { display: none; }
+</style>
+
+<!-- Top Profile Header & Summary -->
+<div class="dash-grid">
+    <div class="profile-box" title="Account Holder Photo"></div>
+    <div>
+        <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; color: #d4af37; font-weight: bold;">Verified Institutional Profile</span>
+        <h2 style="margin: 5px 0 10px 0; color: #0f172a;">{{ owner_name }}</h2>
+        <p style="margin: 3px 0; color: #475569; font-size: 0.95rem;"><strong>Institution:</strong> {{ institution }}</p>
+        <p style="margin: 3px 0; color: #475569; font-size: 0.95rem;"><strong>Registered Email:</strong> {{ masked_email }} <span style="font-size: 0.8rem; color: #2563eb; font-style: italic;">(Contact institution to reveal)</span></p>
+        <p style="margin: 3px 0; color: #475569; font-size: 0.95rem;"><strong>Registered Phone:</strong> {{ masked_phone }} <span style="font-size: 0.8rem; color: #2563eb; font-style: italic;">(Contact institution to reveal)</span></p>
+    </div>
+</div>
+
+<!-- Balance Display Card -->
+<div style="background: linear-gradient(135deg, #091e3a 0%, #1b2a47 100%); color: white; padding: 25px; border-radius: 8px; border-left: 5px solid #d4af37; margin-bottom: 25px; box-shadow: 0 10px 20px rgba(0,0,0,0.15);">
+    <span style="font-size: 0.85rem; letter-spacing: 1px; color: #cbd5e1; text-transform: uppercase;">Available State Reserve Balance</span>
+    <h1 style="margin: 10px 0; font-size: 2.4rem; color: #ffffff;">${{ balance }} <span style="font-size: 1.2rem; color: #d4af37;">{{ currency }}</span></h1>
+    <p style="margin: 0; color: #fca5a5; font-weight: 500; font-size: 0.95rem;">⚠️ Account Status: {{ status }}</p>
+</div>
+
+<!-- Account Number & Routing Details -->
+<div class="account-specs">
+    <div>
+        <p style="margin: 0 0 5px 0; font-size: 0.85rem; color: #64748b; text-transform: uppercase; font-weight: bold;">Account Number</p>
+        <span style="font-family: monospace; font-size: 1.1rem; font-weight: bold; color: #0f172a;">{{ account_number }}</span>
+    </div>
+    <div>
+        <p style="margin: 0 0 5px 0; font-size: 0.85rem; color: #64748b; text-transform: uppercase; font-weight: bold;">Routing Number</p>
+        <span style="font-family: monospace; font-size: 1.1rem; font-weight: bold; color: #0f172a;">{{ routing_number }}</span>
+    </div>
+    <div style="grid-column: span 2; border-top: 1px solid #e2e8f0; padding-top: 12px; margin-top: 5px;">
+        <p style="margin: 0 0 5px 0; font-size: 0.85rem; color: #64748b; text-transform: uppercase; font-weight: bold;">SWIFT / BIC Code</p>
+        <span style="font-family: monospace; font-size: 1.1rem; font-weight: bold; color: #0f172a;">{{ swift_code }} <span style="font-size: 0.8rem; color: #e11d48; font-weight: normal;">(Encrypted / Masked for security compliance)</span></span>
+    </div>
+</div>
+
+<!-- Action Buttons -->
+<h3 style="margin-bottom: 12px; color: #0f172a; font-size: 1.1rem;">Account Actions & Processing</h3>
+<div class="action-buttons">
+    <a href="{% url 'add_external_account' %}" class="btn-action">🔒 Add External Account</a>
+    <a href="{% url 'add_external_account' %}" class="btn-action">🔒 Transfer Funds</a>
+    <a href="{% url 'contact' %}" class="btn-action">📄 View Account Statements</a>
+</div>
+
+<!-- Transaction History Section (2022-2025 Ledger) -->
+<div style="margin-top: 35px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h3 style="margin: 0; color: #0f172a; font-size: 1.1rem;">Transaction History (2022 - 2025 Clearing Records)</h3>
+        <span style="font-size: 0.8rem; color: #64748b;">Verified Clearing House Ledger</span>
+    </div>
+
+    <table class="tx-table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Reference ID</th>
+                <th>Originating Sender / Institution</th>
+                <th>Amount (USD)</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tx in transactions %}
+                <tr class="{% if forloop.counter > 5 %}tx-hidden more-tx{% endif %}">
+                    <td>{{ tx.date }}</td>
+                    <td style="font-family: monospace; color: #475569;">{{ tx.ref }}</td>
+                    <td style="font-weight: 500; color: #1e293b;">{{ tx.company }}</td>
+                    <td style="font-weight: bold; color: #16a34a;">{{ tx.amount }}</td>
+                    <td><span style="background: #dcfce7; color: #166534; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;">{{ tx.status }}</span></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div style="text-align: center; margin-top: 15px;">
+        <button id="view-more-btn" onclick="toggleTransactions()" class="btn-action" style="background: #091e3a; font-size: 0.85rem; padding: 8px 20px;">View More History ▼</button>
+    </div>
+</div>
+
+<!-- Padlock Security Warning Box -->
+<div class="security-banner">
+    <div style="font-size: 2rem;">🔐</div>
+    <div>
+        <h4 style="margin: 0 0 5px 0; color: #854d0e; font-size: 1.05rem;">Strict Regulatory Compliance Notice</h4>
+        <p style="margin: 0; color: #713f12; font-size: 0.9rem; line-height: 1.5;">
+            In accordance with international banking laws and Estonian financial regulations, all outbound transfers, external integrations, and asset liquidations are locked. <strong>You must contact the financial institution administration office directly</strong> before executing any transactions or revealing full profile credentials.
+        </p>
+    </div>
+</div>
+
+<script>
+    function toggleTransactions() {
+        const hiddenRows = document.querySelectorAll('.more-tx');
+        const btn = document.getElementById('view-more-btn');
+        
+        hiddenRows.forEach(row => {
+            if (row.style.display === 'table-row') {
+                row.style.display = 'none';
+                btn.innerText = 'View More History ▼';
+            } else {
+                row.style.display = 'table-row';
+                btn.innerText = 'Show Less ▲';
+            }
+        });
+    }
+</script>
+{% endblock %}

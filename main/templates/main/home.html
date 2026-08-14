@@ -1,0 +1,58 @@
+{% extends 'main/base.html' %}
+{% block content %}
+<h1>Welcome to Classified Federal Treasury</h1>
+<p>Secure national and international treasury services operating under the jurisdiction of Estonia.</p>
+<hr style="margin: 20px 0; border: 0; border-top: 1px solid #cbd5e1;">
+<p><a href="{% url 'login' %}" style="padding: 12px 24px; background: #1b2a47; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; display: inline-block;">Account Login</a></p>
+
+<!-- Interactive Automated Customer Care Chat Widget -->
+<div style="margin-top: 40px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+    <div style="background: #1b2a47; color: white; padding: 12px 15px; font-weight: bold; display: flex; align-items: center; gap: 8px;">
+        <span>💬</span> Customer Care Live Support (Estonia Desk)
+    </div>
+    
+    <div id="chat-box" style="padding: 15px; height: 180px; overflow-y: auto; font-size: 0.95rem; display: flex; flex-direction: column; gap: 10px;">
+        <div style="background: #e2e8f0; padding: 10px 14px; border-radius: 6px; max-width: 80%;">
+            <strong>System Bot:</strong> Hello! Welcome to Classified Federal Treasury support. To better assist you, are you an existing account holder? (Type <em>Yes</em> or <em>No</em>)
+        </div>
+    </div>
+
+    <div style="padding: 10px 15px; background: #edf2f7; display: flex; gap: 10px; border-top: 1px solid #cbd5e1;">
+        <input type="text" id="chat-input" placeholder="Type your response here..." style="flex: 1; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 4px; outline: none;">
+        <button onclick="handleUserChat()" style="background: #1b2a47; color: white; border: none; padding: 8px 18px; border-radius: 4px; cursor: pointer; font-weight: bold;">Send</button>
+    </div>
+</div>
+
+<script>
+    let chatStep = 1;
+
+    function handleUserChat() {
+        const inputField = document.getElementById('chat-input');
+        const chatBox = document.getElementById('chat-box');
+        const userText = inputField.value.trim();
+
+        if (!userText) return;
+
+        // Append User Message
+        chatBox.innerHTML += <div style="background: #dbeafe; padding: 10px 14px; border-radius: 6px; max-width: 80%; align-self: flex-end; margin-left: auto;"><strong>You:</strong> ${userText}</div>;
+        inputField.value = '';
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        // Bot Automated Flow Logic
+        setTimeout(() => {
+            if (chatStep === 1) {
+                chatBox.innerHTML += <div style="background: #e2e8f0; padding: 10px 14px; border-radius: 6px; max-width: 80%;"><strong>System Bot:</strong> Thank you. Could you please state your primary inquiry or account reference number?</div>;
+                chatStep = 2;
+            } else if (chatStep === 2) {
+                chatBox.innerHTML += <div style="background: #e2e8f0; padding: 10px 14px; border-radius: 6px; max-width: 80%;"><strong>System Bot:</strong> Thank you for providing the details. Transferring you to an available compliance officer in our Estonia headquarters... Please hold.</div>;
+                chatStep = 3;
+                setTimeout(() => {
+                    chatBox.innerHTML += <div style="background: #dcfce7; color: #166534; padding: 10px 14px; border-radius: 6px; max-width: 80%;"><strong>Live Agent (Supervisor):</strong> Hello, I have received your automated file intake. How can I assist with your account status today?</div>;
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }, 1500);
+            }
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }, 800);
+    }
+</script>
+{% endblock %}

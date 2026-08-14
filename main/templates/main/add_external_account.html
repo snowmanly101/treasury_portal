@@ -1,0 +1,10 @@
+{% extends 'main/base.html' %}
+{% block content %}
+<h2>Add External Destination Account</h2>
+<div style="background: #f8d7da; color: #721c24; padding: 20px; border: 1px solid #f5c6cb; border-radius: 5px; margin-top: 20px;">
+    <h3>⚠️ Action Restricted</h3>
+    <p>External account integration and outbound transfers are <strong>not available to withdraw</strong>.</p>
+    <p>Please contact the financial institution administration office in Estonia to resolve your account status.</p>
+</div>
+<p style="margin-top: 20px;"><a href="{% url 'dashboard' %}">&larr; Back to Dashboard</a></p>
+{% endblock %}

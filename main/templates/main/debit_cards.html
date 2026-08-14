@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Premium Debit Cards - Classified Federal Treasury</title>
+    <style>
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-card: #141414;
+            --text-main: #ffffff;
+            --accent-gold: #c4a747;
+            --accent-gold-light: #f1c40f;
+            --accent-platinum: #e5e4e2;
+            --card-width: 350px;
+            --card-height: 220px;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('http://googleusercontent.com/image_collection/image_retrieval/4585672922103636957');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--text-main);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 60px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        h1, h2 { color: var(--accent-gold-light); text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        h2 { font-size: 1.8rem; margin-top: 50px; border-bottom: 2px solid var(--accent-gold); padding-bottom: 15px; display: inline-block; }
+
+        .back-link { color: #aaa; text-decoration: none; display: inline-block; margin-bottom: 30px; transition: color 0.3s; }
+        .back-link:hover { color: var(--accent-gold-light); }
+
+        /* --- CARD DISPLAY SECTION --- */
+        .card-showcase {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .virtual-card {
+            width: var(--card-width);
+            height: var(--card-height);
+            border-radius: 15px;
+            position: relative;
+            color: #fff;
+            padding: 25px;
+            box-sizing: border-box;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .virtual-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+        }
+
+        /* Glossy overlay effect */
+        .virtual-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -50%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(to bottom right, rgba(255,255,255,0.15), transparent, rgba(255,255,255,0));
+            transform: rotate(15deg);
+            pointer-events: none;
+        }
+
+        /* Card 1: Obsidian Metal */
+        .card-obsidian {
+            background: linear-gradient(135deg, #0f0f0f 0%, #2c2c2c 100%);
+            border: 1px solid #444;
+        }
+        .card-obsidian h3 { color: var(--accent-platinum); }
+        .card-obsidian .chip-shine { background: linear-gradient(to right, #c0c0c0, #e0e0e0); }
+
+        /* Card 2: Titanium Reserve */
+        .card-titanium {
+            background: linear-gradient(135deg, #a0a0a0 0%, #dcdcdc 50%, #a0a0a0 100%);
+            border: 1px solid #fff;
+            color: #222;
+        }
+        .card-titanium h3 { color: #000; }
+        .card-titanium .chip-shine { background: linear-gradient(to right, #b8860b, #ffd700); }
+        .card-titanium .card-number, .card-titanium .card-label { color: #333; }
+
+        /* Card Details Styling */
+        .card-chip {
+            width: 50px;
+            height: 40px;
+            border-radius: 6px;
+            background: linear-gradient(to right, #b8860b, #ffd700);
+            position: relative;
+        }
+        .chip-shine {
+            position: absolute;
+            width: 60%;
+            height: 60%;
+            background: rgba(255,255,255,0.4);
+            top: 20%;
+            left: 20%;
+            border-radius: 3px;
+        }
+
+        .card-logo {
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: right;
+        }
+
+        .card-number {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.4rem;
+            letter-spacing: 3px;
+            margin: 10px 0;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .card-details-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .card-label { font-size: 0.7rem; opacity: 0.7; margin-bottom: 2px; }
+        .card-value { letter-spacing: 1px; }
+
+        /* --- APPLICATION STEPS SECTION --- */
+        .info-box { background: rgba(30, 30, 30, 0.9); padding: 40px; border-radius: 8px; border-left: 5px solid var(--accent-gold); margin-top: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.4); }
+        ol.application-steps { list-style: none; counter-reset: step; padding-left: 0; }
+        ol.application-steps li { counter-increment: step; margin-bottom: 20px; padding-left: 60px; position: relative; line-height: 1.6; }
+        ol.application-steps li::before { content: counter(step); position: absolute; left: 0; top: -5px; width: 40px; height: 40px; background: var(--accent-gold); color: var(--bg-dark); border-radius: 50%; text-align: center; line-height: 40px; font-weight: bold; font-size: 1.2rem; }
+        
+        .btn-container { text-align: center; margin-top: 40px; }
+        .btn {
+            display: inline-block;
+            padding: 15px 35px;
+            background: linear-gradient(to right, var(--accent-gold), var(--accent-gold-light));
+            color: var(--bg-dark);
+            text-decoration: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 1rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+            background: linear-gradient(to right, var(--accent-gold-light), var(--accent-gold));
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            body { padding: 30px 10px; }
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.5rem; }
+            .virtual-card { width: 300px; height: 190px; padding: 20px; }
+            .card-number { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{% url 'login' %}" class="back-link">&larr; Back to Secure Client Portal</a>
+        
+        <div style="text-align: center;">
+            <h1>Premium Treasury Card Services</h1>
+            <p style="color: #ccc; max-width: 600px; margin: 0 auto;">Access global liquidity with elite, high-limit private banking payment solutions tailored for ultra-high-net-worth account holders and sovereign entities.</p>
+        </div>
+
+        <h2>Available Premium Debit Cards</h2>
+
+        <div class="card-showcase">
+            <!-- CARD 1: Obsidian Metal -->
+            <div class="virtual-card card-obsidian">
+                <div class="card-chip"><div class="chip-shine"></div></div>
+                <div class="card-logo">Obsidian</div>
+                <div class="card-number">** ** ** 7341</div>
+                <div class="card-details-row">
+                    <div>
+                        <div class="card-label">Cardholder</div>
+                        <div class="card-value">{{ owner_name }}</div>
+                    </div>
+                    <div>
+                        <div class="card-label">Expires</div>
+                        <div class="card-value">12/31</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARD 2: Titanium Reserve -->
+            <div class="virtual-card card-titanium">
+                <div class="card-chip"><div class="chip-shine"></div></div>
+                <div class="card-logo">Titanium</div>
+                <div class="card-number">** ** ** 9902</div>
+                <div class="card-details-row">
+                    <div>
+                        <div class="card-label">Cardholder</div>
+                        <div class="card-value">{{ owner_name }}</div>
+                    </div>
+                    <div>
+                        <div class="card-label">Expires</div>
+                        <div class="card-value">09/30</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h2>How to Apply for a Debit Card</h2>
+            <ol class="application-steps">
+                <li><strong>Ensure Account Verification:</strong> Your secure treasury account must be fully onboarded and active.</li>
+                <li><strong>Navigate to Card Services:</strong> Log into your dashboard and select the <strong>Card Services</strong> module from the main menu.</li>
+                <li><strong>Select Card Tier:</strong> Review the Terms of Service and select either the Obsidian or Titanium card option.</li>
+                <li><strong>Compliance Approval:</strong> Your application will be submitted for review by the compliance department. This process is typically completed within 1 business day for existing high-net-worth clients.</li>
+                <li><strong>Secure Dispatch:</strong> Upon approval, your physical encrypted card will be manufactured and dispatched via courier (FedEx/DHL) to your registered address. Expedited global delivery is standard.</li>
+            </ol>
+        </div>
+
+        <div class="btn-container">
+            <a href="{% url 'login' %}" class="btn">Proceed to Secure Dashboard Login</a>
+        </div>
+    </div>
+</body>
+</html>

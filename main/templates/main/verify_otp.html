@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Security Verification - Classified Federal Treasury</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .box {
+            background: #1e1e1e;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            width: 350px;
+            text-align: center;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 15px 0;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            color: #fff;
+            border-radius: 4px;
+            box-sizing: border-box;
+            text-align: center;
+            letter-spacing: 3px;
+            font-size: 18px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #f1c40f;
+            border: none;
+            color: #000;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover { background: #d4ac0d; }
+        .error { color: #ff6b6b; font-size: 14px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h3>Secure One-Time PIN</h3>
+        <p style="font-size: 13px; color: #aaa;">Enter your permanent security token to access the vault.</p>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="password" name="otp" placeholder="••••" maxlength="6" required autofocus>
+            <button type="submit">Authorize Access</button>
+            {% if error %}
+                <div class="error">{{ error }}</div>
+            {% endif %}
+        </form>
+    </div>
+</body>
+</html>

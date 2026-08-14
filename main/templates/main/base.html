@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Classified Federal Treasury | Estonia</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.85)), 
+                        url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color: #1e293b; 
+        }
+        header { 
+            background: linear-gradient(135deg, #091e3a 0%, #1b2a47 100%); 
+            color: white; 
+            padding: 1.2rem 2.5rem; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 3px solid #d4af37; 
+        }
+        .logo-area { display: flex; align-items: center; gap: 12px; }
+        .crest {
+            width: 38px; height: 38px; background: #d4af37; color: #091e3a;
+            font-weight: bold; display: flex; align-items: center; justify-content: center;
+            border-radius: 4px; font-size: 1.1rem; letter-spacing: 1px;
+        }
+        nav a { 
+            color: #cbd5e1; margin-left: 25px; text-decoration: none; 
+            font-size: 0.95rem; font-weight: 500; transition: color 0.2s;
+        }
+        nav a:hover { color: #d4af37; }
+        .container { 
+            padding: 45px 35px; max-width: 950px; margin: 40px auto; 
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
+            border-radius: 8px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); 
+        }
+        footer { text-align: center; padding: 25px; color: #cbd5e1; font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-area">
+            <div class="crest">CFT</div>
+            <div>
+                <h2 style="margin: 0; font-size: 1.25rem; letter-spacing: 0.5px;">Classified Federal Treasury</h2>
+                <span style="font-size: 0.75rem; color: #d4af37; letter-spacing: 1.5px; text-transform: uppercase;">Republic of Estonia</span>
+            </div>
+        </div>
+        <nav>
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'contact' %}">Contact</a>
+            {% if request.session.logged_in %}
+                <a href="{% url 'dashboard' %}">Dashboard</a>
+                <a href="{% url 'logout' %}" style="color: #f87171;">Sign Out</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'signup' %}">Sign Up</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer>
+        &copy; 2026 Classified Federal Treasury. Official State Depository &middot; Regulated under Estonian Financial Supervision.
+    </footer>
+</body>
+</html>
