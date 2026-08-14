@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-3yrli1jdw5qq@8k9mji4gnttz3@ian3=r-%=v@u)6q_12*18@18n'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     'treasury-portal.onrender.com', 
