@@ -1,130 +1,309 @@
-{% extends 'main/base.html' %}
-{% block content %}
-{% load static %}
-<style>
-    body {
-        background: linear-gradient(rgba(5, 10, 20, 0.92), rgba(15, 23, 42, 0.95)), 
-                    url('https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed !important;
-        background-size: cover !important;
-    }
-    .dash-grid { display: grid; grid-template-columns: 140px 1fr; gap: 25px; align-items: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 25px; margin-bottom: 25px; }
-    .profile-box { width: 130px; height: 140px; border: 3px solid #d4af37; border-radius: 6px; background-image: url('{% static "main/owner.jpg" %}'); background-size: cover; background-position: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-    .account-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background: #f8fafc; padding: 20px; border-radius: 6px; border: 1px solid #e2e8f0; margin-bottom: 25px; }
-    .action-buttons { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 25px; }
-    .btn-action { background: #1b2a47; color: white; padding: 12px 20px; border-radius: 4px; text-decoration: none; font-weight: 600; font-size: 0.9rem; border: none; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: background 0.2s; display: inline-block; cursor: pointer; }
-    .btn-action:hover { background: #d4af37; color: #091e3a; }
-    .security-banner { background: #fffbeb; border: 1px solid #fde047; padding: 20px; border-radius: 6px; display: flex; gap: 15px; align-items: flex-start; margin-top: 25px; }
-    
-    /* Transaction Table Styling */
-    .tx-table { width: 100%; border-collapse: collapse; margin-top: 10px; background: #ffffff; border-radius: 6px; overflow: hidden; border: 1px solid #cbd5e1; }
-    .tx-table th, .tx-table td { padding: 12px 15px; text-align: left; font-size: 0.9rem; border-bottom: 1px solid #e2e8f0; }
-    .tx-table th { background: #1b2a47; color: #ffffff; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; }
-    .tx-hidden { display: none; }
-</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classified Federal Treasury - Client Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f1f5f9;
+            color: #1e293b;
+            overflow-x: hidden;
+        }
 
-<!-- Top Profile Header & Summary -->
-<div class="dash-grid">
-    <div class="profile-box" title="Account Holder Photo"></div>
-    <div>
-        <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; color: #d4af37; font-weight: bold;">Verified Institutional Profile</span>
-        <h2 style="margin: 5px 0 10px 0; color: #0f172a;">{{ owner_name }}</h2>
-        <p style="margin: 3px 0; color: #475569; font-size: 0.95rem;"><strong>Institution:</strong> {{ institution }}</p>
-        <p style="margin: 3px 0; color: #475569; font-size: 0.95rem;"><strong>Registered Email:</strong> {{ masked_email }} <span style="font-size: 0.8rem; color: #2563eb; font-style: italic;">(Contact institution to reveal)</span></p>
-        <p style="margin: 3px 0; color: #475569; font-size: 0.95rem;"><strong>Registered Phone:</strong> {{ masked_phone }} <span style="font-size: 0.8rem; color: #2563eb; font-style: italic;">(Contact institution to reveal)</span></p>
-    </div>
-</div>
+        /* Professional Mobile Banking Header */
+        header {
+            background: linear-gradient(135deg, #091e3a 0%, #1b2a47 100%);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+            border-bottom: 3px solid #d4af37;
+        }
 
-<!-- Balance Display Card -->
-<div style="background: linear-gradient(135deg, #091e3a 0%, #1b2a47 100%); color: white; padding: 25px; border-radius: 8px; border-left: 5px solid #d4af37; margin-bottom: 25px; box-shadow: 0 10px 20px rgba(0,0,0,0.15);">
-    <span style="font-size: 0.85rem; letter-spacing: 1px; color: #cbd5e1; text-transform: uppercase;">Available State Reserve Balance</span>
-    <h1 style="margin: 10px 0; font-size: 2.4rem; color: #ffffff;">${{ balance }} <span style="font-size: 1.2rem; color: #d4af37;">{{ currency }}</span></h1>
-    <p style="margin: 0; color: #fca5a5; font-weight: 500; font-size: 0.95rem;">⚠️ Account Status: {{ status }}</p>
-</div>
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-<!-- Account Number & Routing Details -->
-<div class="account-specs">
-    <div>
-        <p style="margin: 0 0 5px 0; font-size: 0.85rem; color: #64748b; text-transform: uppercase; font-weight: bold;">Account Number</p>
-        <span style="font-family: monospace; font-size: 1.1rem; font-weight: bold; color: #0f172a;">{{ account_number }}</span>
-    </div>
-    <div>
-        <p style="margin: 0 0 5px 0; font-size: 0.85rem; color: #64748b; text-transform: uppercase; font-weight: bold;">Routing Number</p>
-        <span style="font-family: monospace; font-size: 1.1rem; font-weight: bold; color: #0f172a;">{{ routing_number }}</span>
-    </div>
-    <div style="grid-column: span 2; border-top: 1px solid #e2e8f0; padding-top: 12px; margin-top: 5px;">
-        <p style="margin: 0 0 5px 0; font-size: 0.85rem; color: #64748b; text-transform: uppercase; font-weight: bold;">SWIFT / BIC Code</p>
-        <span style="font-family: monospace; font-size: 1.1rem; font-weight: bold; color: #0f172a;">{{ swift_code }} <span style="font-size: 0.8rem; color: #e11d48; font-weight: normal;">(Encrypted / Masked for security compliance)</span></span>
-    </div>
-</div>
+        .logo-box {
+            background-color: #d4af37;
+            color: #0f172a;
+            font-weight: bold;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 16px;
+        }
 
-<!-- Action Buttons -->
-<h3 style="margin-bottom: 12px; color: #0f172a; font-size: 1.1rem;">Account Actions & Processing</h3>
-<div class="action-buttons">
-    <a href="{% url 'add_external_account' %}" class="btn-action">🔒 Add External Account</a>
-    <a href="{% url 'add_external_account' %}" class="btn-action">🔒 Transfer Funds</a>
-    <a href="{% url 'contact' %}" class="btn-action">📄 View Account Statements</a>
-</div>
+        .logo-text h1 {
+            font-size: 16px;
+            margin: 0;
+            line-height: 1.2;
+        }
 
-<!-- Transaction History Section (2022-2025 Ledger) -->
-<div style="margin-top: 35px;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <h3 style="margin: 0; color: #0f172a; font-size: 1.1rem;">Transaction History (2022 - 2025 Clearing Records)</h3>
-        <span style="font-size: 0.8rem; color: #64748b;">Verified Clearing House Ledger</span>
-    </div>
+        .logo-text span {
+            font-size: 11px;
+            color: #d4af37;
+            letter-spacing: 0.5px;
+        }
 
-    <table class="tx-table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Reference ID</th>
-                <th>Originating Sender / Institution</th>
-                <th>Amount (USD)</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for tx in transactions %}
-                <tr class="{% if forloop.counter > 5 %}tx-hidden more-tx{% endif %}">
-                    <td>{{ tx.date }}</td>
-                    <td style="font-family: monospace; color: #475569;">{{ tx.ref }}</td>
-                    <td style="font-weight: 500; color: #1e293b;">{{ tx.company }}</td>
-                    <td style="font-weight: bold; color: #16a34a;">{{ tx.amount }}</td>
-                    <td><span style="background: #dcfce7; color: #166534; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;">{{ tx.status }}</span></td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        header nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            width: 100%;
+            padding-top: 5px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-    <div style="text-align: center; margin-top: 15px;">
-        <button id="view-more-btn" onclick="toggleTransactions()" class="btn-action" style="background: #091e3a; font-size: 0.85rem; padding: 8px 20px;">View More History ▼</button>
-    </div>
-</div>
+        header nav a {
+            color: #d4af37;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
 
-<!-- Padlock Security Warning Box -->
-<div class="security-banner">
-    <div style="font-size: 2rem;">🔐</div>
-    <div>
-        <h4 style="margin: 0 0 5px 0; color: #854d0e; font-size: 1.05rem;">Strict Regulatory Compliance Notice</h4>
-        <p style="margin: 0; color: #713f12; font-size: 0.9rem; line-height: 1.5;">
+        header nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Main Container Layout */
+        .dashboard-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+
+        /* Profile & Balance Cards */
+        .profile-card, .balance-card, .info-card {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-sizing: border-box;
+        }
+
+        .balance-card {
+            background: linear-gradient(135deg, #091e3a 0%, #1b2a47 100%);
+            color: white;
+            border-left: 4px solid #d4af37;
+        }
+
+        .balance-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #94a3b8;
+            letter-spacing: 1px;
+        }
+
+        .balance-amount {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ffffff;
+            margin: 8px 0;
+        }
+
+        .balance-currency {
+            color: #d4af37;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: rgba(239, 68, 68, 0.15);
+            color: #fca5a5;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        /* Action Buttons */
+        .action-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .btn-action {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: #091e3a;
+            color: #d4af37;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        /* Transactions Table Wrapper for Mobile Scrolling */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            white-space: nowrap;
+            font-size: 13px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background-color: #091e3a;
+            color: white;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        /* Regulatory Warning Box */
+        .warning-card {
+            background-color: #fefce8;
+            border: 1px solid #fde047;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 13px;
+            color: #713f12;
+            box-sizing: border-box;
+        }
+
+        .warning-card strong {
+            color: #854d0e;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <div class="logo-box">CFT</div>
+            <div class="logo-text">
+                <h1>Classified Federal Treasury</h1>
+                <span>REPUBLIC OF ESTONIA</span>
+            </div>
+        </div>
+        <nav>
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'contact' %}">Contact</a>
+            <a href="{% url 'logout' %}">Sign Out</a>
+        </nav>
+    </header>
+
+    <div class="dashboard-container">
+
+        <!-- User Profile Section -->
+        <div class="profile-card">
+            <div style="font-size: 11px; text-transform: uppercase; color: #d4af37; font-weight: bold;">Verified Institutional Profile</div>
+            <h2 style="margin: 5px 0 15px 0; font-size: 20px;">Daryl Tuchel Junior</h2>
+            <p style="margin: 5px 0; font-size: 13px; color: #475569;"><strong>Institution:</strong> Classified Federal Treasury, Estonia</p>
+            <p style="margin: 5px 0; font-size: 13px; color: #475569;"><strong>Registered Email:</strong> ••••••••@treasury-estonia.ee</p>
+            <p style="margin: 5px 0; font-size: 13px; color: #475569;"><strong>Registered Phone:</strong> ••••••••9982</p>
+        </div>
+
+        <!-- Balance Card -->
+        <div class="balance-card">
+            <div class="balance-title">Available State Reserve Balance</div>
+            <div class="balance-amount">$7,500,000.00 <span class="balance-currency">USD</span></div>
+            <div class="status-badge">⚠️ Account Status: Dormant (Strictly Restricted)</div>
+        </div>
+
+        <!-- Account Details Box -->
+        <div class="profile-card">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 13px;">
+                <div><strong>Account Number:</strong><br><span style="color: #64748b;">••••••••1996</span></div>
+                <div><strong>Routing Number:</strong><br><span style="color: #64748b;">725619978</span></div>
+            </div>
+            <div style="font-size: 13px; border-top: 1px solid #e2e8f0; padding-top: 10px;">
+                <strong>SWIFT / BIC CODE:</strong><br><span style="color: #dc2626;">XXXX (Encrypted / Masked for security compliance)</span>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-group">
+            <a href="{% url 'add_external' %}" class="btn-action">🔒 Add External Account</a>
+            <a href="#" class="btn-action">🔒 Transfer Funds</a>
+            <a href="#" class="btn-action">📄 View Account Statements</a>
+        </div>
+
+        <!-- Transaction History Table -->
+        <h3 style="font-size: 16px; margin-bottom: 10px;">Transaction History (2022 - 2025)</h3>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Reference ID</th>
+                        <th>Originating Sender</th>
+                        <th>Amount (USD)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2025-11-12</td>
+                        <td>TXN-99412</td>
+                        <td>**4902 - Barrick Gold Corp (Canada)</td>
+                        <td style="color: #16a34a; font-weight: bold;">+$185,000.00</td>
+                    </tr>
+                    <tr>
+                        <td>2023-04-19</td>
+                        <td>TXN-44102</td>
+                        <td>**1184 - Deutsche bullion clearing (Germany)</td>
+                        <td style="color: #16a34a; font-weight: bold;">+$142,500.00</td>
+                    </tr>
+                    <tr>
+                        <td>2025-08-30</td>
+                        <td>TXN-88201</td>
+                        <td>**7351 - Newmont Corporation (USA)</td>
+                        <td style="color: #16a34a; font-weight: bold;">+$198,200.00</td>
+                    </tr>
+                    <tr>
+                        <td>2022-02-14</td>
+                        <td>TXN-11930</td>
+                        <td>**5529 - Zurich Reserve Desk (Switzerland)</td>
+                        <td style="color: #16a34a; font-weight: bold;">+$175,000.00</td>
+                    </tr>
+                    <tr>
+                        <td>2024-06-05</td>
+                        <td>TXN-66382</td>
+                        <td>**9043 - Dubai Gold Bullion DMCC (UAE)</td>
+                        <td style="color: #16a34a; font-weight: bold;">+$160,300.00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Compliance Notice -->
+        <div class="warning-card">
+            <strong>Strict Regulatory Compliance Notice</strong><br>
             In accordance with international banking laws and Estonian financial regulations, all outbound transfers, external integrations, and asset liquidations are locked. <strong>You must contact the financial institution administration office directly</strong> before executing any transactions or revealing full profile credentials.
-        </p>
-    </div>
-</div>
+        </div>
 
-<script>
-    function toggleTransactions() {
-        const hiddenRows = document.querySelectorAll('.more-tx');
-        const btn = document.getElementById('view-more-btn');
-        
-        hiddenRows.forEach(row => {
-            if (row.style.display === 'table-row') {
-                row.style.display = 'none';
-                btn.innerText = 'View More History ▼';
-            } else {
-                row.style.display = 'table-row';
-                btn.innerText = 'Show Less ▲';
-            }
-        });
-    }
-</script>
-{% endblock %}
+    </div>
+
+</body>
+</html>
