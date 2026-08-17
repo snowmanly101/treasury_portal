@@ -5,349 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account Dashboard - Classified Federal Treasury</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #090d16;
-            color: #ffffff;
-        }
-        nav {
-            background: #0f172a;
-            border-bottom: 1px solid #1e293b;
-            padding: 15px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .nav-brand {
-            color: #e2b714;
-            font-weight: bold;
-            font-size: 18px;
-            letter-spacing: 0.5px;
-        }
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        .status-pill {
-            background: rgba(239, 68, 68, 0.15);
-            border: 1px solid #ef4444;
-            color: #fca5a5;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-        .logout-btn {
-            color: #94a3b8;
-            text-decoration: none;
-            font-size: 13px;
-        }
-        .logout-btn:hover {
-            color: #fff;
-        }
-        .main-container {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-        .account-overview {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            border: 1px solid #334155;
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        .balance-label {
-            color: #94a3b8;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-        }
-        .balance-amount {
-            font-size: 32px;
-            font-weight: bold;
-            color: #f8fafc;
-        }
-        .account-meta {
-            text-align: right;
-            color: #94a3b8;
-            font-size: 13px;
-            line-height: 1.6;
-        }
-        .account-meta span {
-            color: #e2b714;
-            font-family: monospace;
-        }
-
-        /* Locked Notice Banner */
-        .locked-banner {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid #ef4444;
-            color: #fca5a5;
-            padding: 15px 20px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 14px;
-            font-weight: 500;
-        }
-        .locked-banner span {
-            font-size: 20px;
-        }
-
-        /* Unique Professional Action Grid */
-        .section-title {
-            font-size: 16px;
-            color: #cbd5e1;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-        .action-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-        .action-card {
-            background: #0f172a;
-            border: 1px solid #1e293b;
-            border-radius: 10px;
-            padding: 25px;
-            text-decoration: none;
-            color: inherit;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.25s ease;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-        .action-card:hover {
-            transform: translateY(-4px);
-            border-color: #e2b714;
-            background: #131c31;
-        }
-        .action-top-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 15px;
-        }
-        .action-icon {
-            width: 45px;
-            height: 45px;
-            background: rgba(226, 183, 20, 0.1);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #e2b714;
-        }
-        .padlock-icon {
-            font-size: 16px;
-        }
-        .action-card h3 {
-            margin: 0 0 8px 0;
-            font-size: 16px;
-            color: #fff;
-        }
-        .action-card p {
-            margin: 0 0 15px 0;
-            font-size: 12px;
-            color: #94a3b8;
-            line-height: 1.4;
-            flex-grow: 1;
-        }
-        .action-badge {
-            font-size: 11px;
-            color: #fca5a5;
-            background: rgba(239, 68, 68, 0.1);
-            padding: 4px 8px;
-            border-radius: 4px;
-            display: inline-block;
-            align-self: flex-start;
-            border: 1px solid rgba(239, 68, 68, 0.2);
-        }
-
-        /* Transactions Section & Pagination */
-        .transactions-card {
-            background: #0f172a;
-            border: 1px solid #1e293b;
-            border-radius: 12px;
-            padding: 25px;
-        }
-        .transactions-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .transactions-header h3 {
-            margin: 0;
-            font-size: 16px;
-            color: #fff;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th {
-            text-align: left;
-            color: #64748b;
-            font-size: 12px;
-            text-transform: uppercase;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #1e293b;
-        }
-        td {
-            padding: 15px 0;
-            font-size: 14px;
-            border-bottom: 1px solid #1e293b;
-        }
+        body { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #090d16; color: #ffffff; }
+        nav { background: #0f172a; border-bottom: 1px solid #1e293b; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; }
+        .nav-brand { color: #e2b714; font-weight: bold; font-size: 18px; letter-spacing: 0.5px; }
+        .nav-right { display: flex; align-items: center; gap: 20px; }
+        .status-pill { background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #fca5a5; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .logout-btn { color: #94a3b8; text-decoration: none; font-size: 13px; }
+        .logout-btn:hover { color: #fff; }
+        .main-container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        .account-overview { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border: 1px solid #334155; border-radius: 12px; padding: 30px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 8px 20px rgba(0,0,0,0.4); flex-wrap: wrap; gap: 20px; }
+        .balance-label { color: #94a3b8; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .balance-amount { font-size: 32px; font-weight: bold; color: #f8fafc; }
+        .account-meta { text-align: right; color: #94a3b8; font-size: 13px; line-height: 1.6; }
+        .account-meta span { color: #e2b714; font-family: monospace; }
+        .locked-banner { background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; color: #fca5a5; padding: 15px 20px; border-radius: 8px; margin-bottom: 30px; display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 500; }
+        .transactions-card { background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; padding: 25px; }
+        .transactions-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .transactions-header h3 { margin: 0; font-size: 16px; color: #fff; }
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; color: #64748b; font-size: 12px; text-transform: uppercase; padding-bottom: 12px; border-bottom: 1px solid #1e293b; }
+        td { padding: 15px 0; font-size: 14px; border-bottom: 1px solid #1e293b; }
         .amount-positive { color: #4ade80; font-weight: 600; }
         .amount-negative { color: #f87171; font-weight: 600; }
-        
-        .page-group {
-            display: none;
-        }
-        .page-group.active {
-            display: table-row-group;
-        }
-
-        .pagination-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid #1e293b;
-            font-size: 13px;
-            color: #94a3b8;
-        }
-        .pagination-buttons {
-            display: flex;
-            gap: 10px;
-        }
-        .page-btn {
-            background: #1e293b;
-            border: 1px solid #334155;
-            color: #38bdf8;
-            padding: 6px 14px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            transition: background 0.2s;
-        }
-        .page-btn:hover:not(:disabled) {
-            background: rgba(56, 189, 248, 0.1);
-            border-color: #38bdf8;
-        }
-        .page-btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-            color: #64748b;
-        }
     </style>
 </head>
 <body>
     <nav>
         <div class="nav-brand">Classified Federal Treasury</div>
         <div class="nav-right">
-            <div class="status-pill">🔒 Account Locked / Dormant</div>
-            <a href="{% url 'login' %}" class="logout-btn">Sign Out</a>
+            <div class="status-pill">🔒 {{ status }}</div>
+            <a href="{% url 'logout' %}" class="logout-btn">Sign Out</a>
         </div>
     </nav>
 
     <div class="main-container">
-        <!-- Account Locked Notice Banner -->
         <div class="locked-banner">
             <span>🔒</span>
-            <div><strong>Security Notice:</strong> This account is currently locked due to dormant status. All operations are restricted. Please contact customer care immediately to unlock your profile.</div>
+            <div><strong>Security Notice:</strong> Profile Status: {{ status }}. Operations are restricted. Please contact customer support immediately.</div>
         </div>
 
-        <!-- Account Balance Banner -->
         <div class="account-overview">
             <div>
                 <div class="balance-label">Current Account Balance</div>
-                <div class="balance-amount">$7,000,000.00</div>
+                <div class="balance-amount">{{ currency }} {{ balance }}</div>
             </div>
             <div class="account-meta">
-                <div>Account Holder: <span>Daryl Jr tuchel</span></div>
-                <div>Account Type: <span>Current Account</span></div>
-                <div>Acc Number: <span>••••4092</span></div>
-                <div>Routing ID: <span>•••••8810</span></div>
+                <div>Account Holder: <span>{{ owner_name }}</span></div>
+                <div>Institution: <span>{{ institution }}</span></div>
+                <div>Acc Number: <span>••••{{ account_number }}</span></div>
+                <div>Routing ID: <span>{{ routing_number }}</span></div>
             </div>
         </div>
 
-        <!-- Unique Professional Action Grid with Padlocks -->
-        <div class="section-title">Restricted Financial Operations</div>
-        <div class="action-grid">
-            <a href="{% url 'contact' %}" class="action-card">
-                <div class="action-top-row">
-                    <div class="action-icon">
-                        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
-                    </div>
-                    <div class="padlock-icon" title="Locked">🔒</div>
-                </div>
-                <h3>Transfer Funds</h3>
-                <p>Execute domestic and international wire transfers across approved global clearings.</p>
-                <span class="action-badge">Locked - Contact Support</span>
-            </a>
-
-            <a href="{% url 'contact' %}" class="action-card">
-                <div class="action-top-row">
-                    <div class="action-icon">
-                        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-                    </div>
-                    <div class="padlock-icon" title="Locked">🔒</div>
-                </div>
-                <h3>Bill Pay</h3>
-                <p>Settle approved institutional invoices, utility statements, and recurring obligations.</p>
-                <span class="action-badge">Locked - Contact Support</span>
-            </a>
-
-            <a href="{% url 'contact' %}" class="action-card">
-                <div class="action-top-row">
-                    <div class="action-icon">
-                        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
-                    </div>
-                    <div class="padlock-icon" title="Locked">🔒</div>
-                </div>
-                <h3>Deposit Cheque</h3>
-                <p>Upload digital endorsed bank drafts or promissory notes for vault processing.</p>
-                <span class="action-badge">Locked - Contact Support</span>
-            </a>
-
-            <a href="{% url 'contact' %}" class="action-card">
-                <div class="action-top-row">
-                    <div class="action-icon">
-                        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                    </div>
-                    <div class="padlock-icon" title="Locked">🔒</div>
-                </div>
-                <h3>Account Statement</h3>
-                <p>Generate, download, or audit official cryptographic statements of account activity.</p>
-                <span class="action-badge">Locked - Contact Support</span>
-            </a>
-        </div>
-
-        <!-- Transactions History Card with Multi-Page Pagination -->
         <div class="transactions-card">
             <div class="transactions-header">
-                <h3>Transaction History (2017 - 2025)</h3>
+                <h3>Transaction History</h3>
             </div>
             <table>
                 <thead>
@@ -358,110 +70,22 @@
                         <th style="text-align: right;">Amount</th>
                     </tr>
                 </thead>
-
-                <!-- PAGE 1 -->
-                <tbody id="page-1" class="page-group active">
+                <tbody>
+                    {% for tx in transactions %}
                     <tr>
-                        <td>Dec 18, 2025</td>
-                        <td>Global Wire Outbound Settlement</td>
-                        <td style="color: #f87171;">Account Locked</td>
-                        <td style="text-align: right;" class="amount-negative">-$45,000.00</td>
+                        <td>{{ tx.date }}</td>
+                        <td>{{ tx.ref }} - {{ tx.company }}</td>
+                        <td style="color: {% if tx.status == 'Cleared' %}#4ade80{% else %}#f87171{% endif %};">{{ tx.status }}</td>
+                        <td style="text-align: right;" class="{% if '+' in tx.amount %}amount-positive{% else %}amount-negative{% endif %}">{{ tx.amount }}</td>
                     </tr>
+                    {% empty %}
                     <tr>
-                        <td>Aug 14, 2024</td>
-                        <td>Institutional Capital Credit Deposit</td>
-                        <td style="color: #4ade80;">Cleared</td>
-                        <td style="text-align: right;" class="amount-positive">+$85,000.00</td>
+                        <td colspan="4" style="text-align: center; color: #64748b;">No transaction records found for this profile.</td>
                     </tr>
-                    <tr>
-                        <td>Nov 02, 2023</td>
-                        <td>Treasury Dividend Allocation</td>
-                        <td style="color: #4ade80;">Cleared</td>
-                        <td style="text-align: right;" class="amount-positive">+$62,500.00</td>
-                    </tr>
-                </tbody>
-
-                <!-- PAGE 2 -->
-                <tbody id="page-2" class="page-group">
-                    <tr>
-                        <td>May 19, 2022</td>
-                        <td>Offshore Settlement Wire In</td>
-                        <td style="color: #4ade80;">Cleared</td>
-                        <td style="text-align: right;" class="amount-positive">+$95,000.00</td>
-                    </tr>
-                    <tr>
-                        <td>Oct 11, 2021</td>
-                        <td>Reserve Portfolio Rebalancing Fee</td>
-                        <td style="color: #4ade80;">Cleared</td>
-                        <td style="text-align: right;" class="amount-negative">-$30,000.00</td>
-                    </tr>
-                    <tr>
-                        <td>Feb 25, 2020</td>
-                        <td>Direct Treasury Funding Credit</td>
-                        <td style="color: #4ade80;">Cleared</td>
-                        <td style="text-align: right;" class="amount-positive">+$50,000.00</td>
-                    </tr>
-                </tbody>
-
-                <!-- PAGE 3 -->
-                <tbody id="page-3" class="page-group">
-                    <tr>
-                        <td>Sep 14, 2019</td>
-                        <td>Institutional Asset Transfer</td>
-                        <td style="color: #4ade80;">Cleared</td>
-                        <td style="text-align: right;" class="amount-positive">+$75,000.00</td>
-                    </tr>
-                    <tr>
-                        <td>Mar 08, 2018</td>
-                        <td>Compliance Documentation Retainer</td>
-                        <td style="color: #4ade80;">Cleared</td>
-                        <td style="text-align: right;" class="amount-negative">-$20,000.00</td>
-                    </tr>
-                    <tr>
-                        <td>Jan 15, 2017</td>
-                        <td>Initial Current Account Capitalization</td>
-                        <td style="color: #4ade80;">Cleared</td>
-                        <td style="text-align: right;" class="amount-positive">+$100,000.00</td>
-                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
-
-            <!-- Pagination Controls -->
-            <div class="pagination-footer">
-                <span id="pageInfo">Showing Page 1 of 3</span>
-                <div class="pagination-buttons">
-                    <button class="page-btn" id="prevBtn" onclick="changePage(-1)" disabled>Previous</button>
-                    <button class="page-btn" id="nextBtn" onclick="changePage(1)">Next</button>
-                </div>
-            </div>
         </div>
     </div>
-
-    <script>
-        let currentPage = 1;
-        const totalPages = 3;
-
-        function changePage(direction) {
-            currentPage += direction;
-            
-            if (currentPage < 1) currentPage = 1;
-            if (currentPage > totalPages) currentPage = totalPages;
-
-            // Hide all pages
-            for (let i = 1; i <= totalPages; i++) {
-                document.getElementById('page-' + i).classList.remove('active');
-            }
-
-            // Show current page
-            document.getElementById('page-' + currentPage).classList.add('active');
-
-            // Update footer info text
-            document.getElementById('pageInfo').textContent = Showing Page ${currentPage} of ${totalPages};
-
-            // Update button states
-            document.getElementById('prevBtn').disabled = currentPage === 1;
-            document.getElementById('nextBtn').disabled = currentPage === totalPages;
-        }
-    </script>
 </body>
 </html>
