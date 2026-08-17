@@ -182,7 +182,7 @@
             border: 1px solid rgba(239, 68, 68, 0.2);
         }
 
-        /* Transactions Section */
+        /* Transactions Section & Pagination */
         .transactions-card {
             background: #0f172a;
             border: 1px solid #1e293b;
@@ -219,20 +219,46 @@
         }
         .amount-positive { color: #4ade80; font-weight: 600; }
         .amount-negative { color: #f87171; font-weight: 600; }
-        .hidden-row { display: none; }
         
-        .view-more-btn {
-            background: none;
+        .page-group {
+            display: none;
+        }
+        .page-group.active {
+            display: table-row-group;
+        }
+
+        .pagination-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #1e293b;
+            font-size: 13px;
+            color: #94a3b8;
+        }
+        .pagination-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .page-btn {
+            background: #1e293b;
             border: 1px solid #334155;
             color: #38bdf8;
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 6px;
             cursor: pointer;
             font-size: 13px;
             transition: background 0.2s;
         }
-        .view-more-btn:hover {
+        .page-btn:hover:not(:disabled) {
             background: rgba(56, 189, 248, 0.1);
+            border-color: #38bdf8;
+        }
+        .page-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            color: #64748b;
         }
     </style>
 </head>
@@ -318,11 +344,10 @@
             </a>
         </div>
 
-        <!-- Transactions History Card (2017 to 2025, $10k to $100k range) with Functional "View More" -->
+        <!-- Transactions History Card with Multi-Page Pagination -->
         <div class="transactions-card">
             <div class="transactions-header">
                 <h3>Transaction History (2017 - 2025)</h3>
-                <button class="view-more-btn" id="viewMoreBtn" onclick="toggleTransactions()">View More</button>
             </div>
             <table>
                 <thead>
@@ -333,7 +358,9 @@
                         <th style="text-align: right;">Amount</th>
                     </tr>
                 </thead>
-                <tbody id="txTableBody">
+
+                <!-- PAGE 1 -->
+                <tbody id="page-1" class="page-group active">
                     <tr>
                         <td>Dec 18, 2025</td>
                         <td>Global Wire Outbound Settlement</td>
@@ -352,38 +379,45 @@
                         <td style="color: #4ade80;">Cleared</td>
                         <td style="text-align: right;" class="amount-positive">+$62,500.00</td>
                     </tr>
-                    <!-- Hidden past transactions revealed on "View More" click -->
-                    <tr class="hidden-row extra-tx">
+                </tbody>
+
+                <!-- PAGE 2 -->
+                <tbody id="page-2" class="page-group">
+                    <tr>
                         <td>May 19, 2022</td>
                         <td>Offshore Settlement Wire In</td>
                         <td style="color: #4ade80;">Cleared</td>
                         <td style="text-align: right;" class="amount-positive">+$95,000.00</td>
                     </tr>
-                    <tr class="hidden-row extra-tx">
+                    <tr>
                         <td>Oct 11, 2021</td>
                         <td>Reserve Portfolio Rebalancing Fee</td>
                         <td style="color: #4ade80;">Cleared</td>
                         <td style="text-align: right;" class="amount-negative">-$30,000.00</td>
                     </tr>
-                    <tr class="hidden-row extra-tx">
+                    <tr>
                         <td>Feb 25, 2020</td>
                         <td>Direct Treasury Funding Credit</td>
                         <td style="color: #4ade80;">Cleared</td>
                         <td style="text-align: right;" class="amount-positive">+$50,000.00</td>
                     </tr>
-                    <tr class="hidden-row extra-tx">
+                </tbody>
+
+                <!-- PAGE 3 -->
+                <tbody id="page-3" class="page-group">
+                    <tr>
                         <td>Sep 14, 2019</td>
                         <td>Institutional Asset Transfer</td>
                         <td style="color: #4ade80;">Cleared</td>
                         <td style="text-align: right;" class="amount-positive">+$75,000.00</td>
                     </tr>
-                    <tr class="hidden-row extra-tx">
+                    <tr>
                         <td>Mar 08, 2018</td>
                         <td>Compliance Documentation Retainer</td>
                         <td style="color: #4ade80;">Cleared</td>
                         <td style="text-align: right;" class="amount-negative">-$20,000.00</td>
                     </tr>
-                    <tr class="hidden-row extra-tx">
+                    <tr>
                         <td>Jan 15, 2017</td>
                         <td>Initial Current Account Capitalization</td>
                         <td style="color: #4ade80;">Cleared</td>
@@ -391,21 +425,42 @@
                     </tr>
                 </tbody>
             </table>
+
+            <!-- Pagination Controls -->
+            <div class="pagination-footer">
+                <span id="pageInfo">Showing Page 1 of 3</span>
+                <div class="pagination-buttons">
+                    <button class="page-btn" id="prevBtn" onclick="changePage(-1)" disabled>Previous</button>
+                    <button class="page-btn" id="nextBtn" onclick="changePage(1)">Next</button>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        function toggleTransactions() {
-            const hiddenRows = document.querySelectorAll('.extra-tx');
-            const btn = document.getElementById('viewMoreBtn');
-            
-            let isHidden = hiddenRows[0].style.display === 'none' || hiddenRows[0].style.display === '';
-            
-            hiddenRows.forEach(row => {
-                row.style.display = isHidden ? 'table-row' : 'none';
-            });
+        let currentPage = 1;
+        const totalPages = 3;
 
-            btn.textContent = isHidden ? 'Show Less' : 'View More';
+        function changePage(direction) {
+            currentPage += direction;
+            
+            if (currentPage < 1) currentPage = 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+
+            // Hide all pages
+            for (let i = 1; i <= totalPages; i++) {
+                document.getElementById('page-' + i).classList.remove('active');
+            }
+
+            // Show current page
+            document.getElementById('page-' + currentPage).classList.add('active');
+
+            // Update footer info text
+            document.getElementById('pageInfo').textContent = Showing Page ${currentPage} of ${totalPages};
+
+            // Update button states
+            document.getElementById('prevBtn').disabled = currentPage === 1;
+            document.getElementById('nextBtn').disabled = currentPage === totalPages;
         }
     </script>
 </body>
