@@ -142,33 +142,27 @@ def dashboard_view(request):
 
   try:
     if request.user.is_authenticated:
-      profile = UserProfile.objects.get(user_id=request.user.id)
-      user_transactions = Transaction.objects.filter(
-          user_profile=profile
-      ).order_by('-id')
-      masked_email = (
-          request.user.email if request.user.email else 'user@treasury-estonia.ee'
-      )
+      profile = UserProfile.objects.filter(user=request.user).first()
+      if profile:
+        user_transactions = Transaction.objects.filter(user_profile=profile).order_by('-id')
+        if not user_transactions.exists():
+          user_transactions = Transaction.objects.filter(user=request.user).order_by('-id')
+      else:
+        user_transactions = Transaction.objects.filter(user=request.user).order_by('-id')
+        
+      masked_email = request.user.email if request.user.email else 'user@treasury-estonia.ee'
       username_lower = request.user.username.lower()
     else:
       profile = UserProfile.objects.first()
-      user_transactions = (
-          Transaction.objects.filter(user_profile=profile).order_by('-id')
-          if profile
-          else []
-      )
+      user_transactions = Transaction.objects.filter(user_profile=profile).order_by('-id') if profile else []
       masked_email = 'user@treasury-estonia.ee'
       username_lower = 'steven'
 
     account_number = profile.account_number if profile else '••••4092'
     routing_number = profile.routing_id if profile else '8810'
     balance = profile.balance if profile else '0.00'
-    status = (
-        'Dormant (Strictly Restricted)'
-        if (profile and profile.is_locked)
-        else 'Active Profile'
-    )
-  except UserProfile.DoesNotExist:
+    status = 'Dormant (Strictly Restricted)' if (profile and profile.is_locked) else 'Active Profile'
+  except Exception:
     account_number = '••••4092'
     routing_number = '8810'
     balance = '0.00'
@@ -177,9 +171,7 @@ def dashboard_view(request):
     masked_email = 'user@treasury-estonia.ee'
     username_lower = ''
 
-  owner_name = (
-      'Steven Richman' if 'steven' in username_lower else 'Daryl Tuchel Junior'
-  )
+  owner_name = 'Steven Richman' if 'steven' in username_lower else 'Daryl Tuchel Junior'
 
   context = {
       'owner_name': owner_name,
