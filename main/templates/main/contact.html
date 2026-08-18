@@ -1,14 +1,20 @@
 {% extends 'main/base.html' %}
 {% block content %}
-<h2>Contact Classified Federal Treasury</h2>
-<p>Reach out to our administrative offices or support representatives in Estonia for official assistance.</p>
+<div style="max-width: 600px; margin: 40px auto; padding: 0 20px;">
+    <div style="background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; padding: 30px; box-shadow: 0 8px 20px rgba(0,0,0,0.4); color: #ffffff;">
+        <h2 style="color: #e2b714; margin-top: 0; font-size: 22px;">Contact Classified Federal Treasury</h2>
+        <p style="color: #94a3b8; font-size: 14px; line-height: 1.6;">Reach out to our administrative offices or support representatives in Estonia for official assistance regarding your account restrictions.</p>
 
-<div style="background: #e8f4fd; padding: 20px; border-radius: 5px; margin-top: 20px;">
-    <h3>Official Support Desk</h3>
-    <p><strong>Jurisdiction:</strong> Republic of Estonia</p>
-    <p><strong>Email Support:</strong> support@classifiedtreasury.ee</p>
-    <p><strong>Office Hours:</strong> Monday – Friday, 09:00 – 17:00 (EET)</p>
+        <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; border-radius: 8px; padding: 20px; margin-top: 20px;">
+            <h3 style="color: #fca5a5; margin-top: 0; font-size: 16px;">Official Support Desk</h3>
+            <p style="color: #f8fafc; font-size: 14px; margin: 8px 0;"><strong>Jurisdiction:</strong> Republic of Estonia</p>
+            <p style="color: #f8fafc; font-size: 14px; margin: 8px 0;"><strong>Email Support:</strong> support@classifiedtreasury.ee</p>
+            <p style="color: #f8fafc; font-size: 14px; margin: 8px 0;"><strong>Office Hours:</strong> Monday – Friday, 09:00 – 17:00 (EET)</p>
+        </div>
+
+        <div style="margin-top: 25px;">
+            <a href="{% url 'dashboard' %}" style="display: inline-block; background: #1e293b; color: #fff; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 600; transition: 0.2s;" onmouseover="this.style.background='#334155'" onmouseout="this.style.background='#1e293b'">&larr; Return to Dashboard</a>
+        </div>
+    </div>
 </div>
-
-<p style="margin-top: 20px;"><a href="{% url 'home' %}">&larr; Back to Home</a></p>
 {% endblock %}

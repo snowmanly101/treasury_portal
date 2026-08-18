@@ -19,6 +19,12 @@
         .account-meta { text-align: right; color: #94a3b8; font-size: 13px; line-height: 1.6; }
         .account-meta span { color: #e2b714; font-family: monospace; }
         .locked-banner { background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; color: #fca5a5; padding: 15px 20px; border-radius: 8px; margin-bottom: 30px; display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 500; }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .service-card { background: #0f172a; border: 1px solid #1e293b; border-radius: 10px; padding: 20px; text-decoration: none; color: inherit; display: block; position: relative; transition: 0.2s; }
+        .service-card:hover { border-color: #334155; }
+        .service-lock { position: absolute; top: 15px; right: 15px; font-size: 16px; }
+        .service-title { font-weight: 600; font-size: 15px; margin-bottom: 5px; color: #f8fafc; }
+        .service-desc { font-size: 12px; color: #94a3b8; }
         .transactions-card { background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; padding: 25px; }
         .transactions-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .transactions-header h3 { margin: 0; font-size: 16px; color: #fff; }
@@ -54,6 +60,33 @@
                 <div>Institution: <span>{{ institution }}</span></div>
                 <div>Acc Number: <span>••••{{ account_number }}</span></div>
                 <div>Routing ID: <span>{{ routing_number }}</span></div>
+            </div>
+        </div>
+
+        <!-- Transfer & Payment Services (Redirects to Contact / Support or External Account) -->
+        <div style="margin-bottom: 15px;">
+            <h3 style="font-size: 16px; color: #fff; margin-bottom: 15px;">Transfer & Payment Services</h3>
+            <div class="services-grid">
+                <a href="{% url 'contact' %}" class="service-card">
+                    <div class="service-lock">🔒</div>
+                    <div class="service-title">Bill Pay</div>
+                    <div class="service-desc">Manage and pay bills securely</div>
+                </a>
+                <a href="{% url 'contact' %}" class="service-card">
+                    <div class="service-lock">🔒</div>
+                    <div class="service-title">Deposit Check</div>
+                    <div class="service-desc">Mobile check deposit portal</div>
+                </a>
+                <a href="{% url 'contact' %}" class="service-card">
+                    <div class="service-lock">🔒</div>
+                    <div class="service-title">Wire Transfers</div>
+                    <div class="service-desc">Domestic and international wire</div>
+                </a>
+                <a href="{% url 'add_external_account' %}" class="service-card">
+                    <div class="service-lock">🔒</div>
+                    <div class="service-title">Add External Account</div>
+                    <div class="service-desc">Link external financial sources</div>
+                </a>
             </div>
         </div>
 
