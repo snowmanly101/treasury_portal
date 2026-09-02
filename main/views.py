@@ -62,6 +62,8 @@ def login_view(request):
     user = authenticate(request, username=username, password=password)
 
     if user is not None:
+      # Log the user into the official Django session so request.user works properly
+      login(request, user)
       request.session['failed_attempts'] = 0
       request.session['pre_auth_user_id'] = user.id
       return redirect('security_question')
@@ -142,21 +144,20 @@ def dashboard_view(request):
 
   try:
     if request.user.is_authenticated:
+      # Strictly match the profile and transactions to the currently logged-in user
       profile = UserProfile.objects.filter(user=request.user).first()
       if profile:
         user_transactions = Transaction.objects.filter(user_profile=profile).order_by('-id')
-        if not user_transactions.exists():
-          user_transactions = Transaction.objects.filter(user=request.user).order_by('-id')
       else:
         user_transactions = Transaction.objects.filter(user=request.user).order_by('-id')
         
       masked_email = request.user.email if request.user.email else 'user@treasury-estonia.ee'
       username_lower = request.user.username.lower()
     else:
-      profile = UserProfile.objects.first()
-      user_transactions = Transaction.objects.filter(user_profile=profile).order_by('-id') if profile else []
+      profile = None
+      user_transactions = []
       masked_email = 'user@treasury-estonia.ee'
-      username_lower = 'steven'
+      username_lower = ''
 
     account_number = profile.account_number if profile else '••••4092'
     routing_number = profile.routing_id if profile else '8810'
@@ -171,7 +172,7 @@ def dashboard_view(request):
     masked_email = 'user@treasury-estonia.ee'
     username_lower = ''
 
-  owner_name = 'Steven Richman' if 'steven' in username_lower else 'Daryl Tuchel Junior'
+  owner_name = request.user.get_full_name() if (request.user.is_authenticated and request.user.get_full_name()) else request.user.username
 
   context = {
       'owner_name': owner_name,
